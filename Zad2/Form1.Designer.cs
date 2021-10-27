@@ -31,6 +31,17 @@ namespace Zad2
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.heightSegmentsInput = new System.Windows.Forms.NumericUpDown();
+            this.widthSegmentsInput = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.triangulatedFillColorButton = new System.Windows.Forms.RadioButton();
+            this.exactFillColorButton = new System.Windows.Forms.RadioButton();
+            this.label14 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.definedNVectorButton = new System.Windows.Forms.RadioButton();
+            this.constantNVectorButton = new System.Windows.Forms.RadioButton();
             this.label13 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.animatedLightVersorButton = new System.Windows.Forms.RadioButton();
@@ -55,15 +66,12 @@ namespace Zad2
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ksValueSlider = new System.Windows.Forms.TrackBar();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.constantNVectorButton = new System.Windows.Forms.RadioButton();
-            this.definedNVectorButton = new System.Windows.Forms.RadioButton();
-            this.label14 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.exactFillColorButton = new System.Windows.Forms.RadioButton();
-            this.triangulatedFillColorButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightSegmentsInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).BeginInit();
+            this.panel4.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mValueSlider)).BeginInit();
@@ -71,8 +79,6 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.objectColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdValueSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksValueSlider)).BeginInit();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -85,6 +91,10 @@ namespace Zad2
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.heightSegmentsInput);
+            this.groupBox1.Controls.Add(this.widthSegmentsInput);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.panel4);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.panel3);
@@ -113,6 +123,143 @@ namespace Zad2
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
+            // 
+            // heightSegmentsInput
+            // 
+            this.heightSegmentsInput.Location = new System.Drawing.Point(163, 568);
+            this.heightSegmentsInput.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.heightSegmentsInput.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.heightSegmentsInput.Name = "heightSegmentsInput";
+            this.heightSegmentsInput.Size = new System.Drawing.Size(72, 27);
+            this.heightSegmentsInput.TabIndex = 25;
+            this.heightSegmentsInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.heightSegmentsInput.ValueChanged += new System.EventHandler(this.heightSegmentsInput_ValueChanged);
+            // 
+            // widthSegmentsInput
+            // 
+            this.widthSegmentsInput.Location = new System.Drawing.Point(163, 529);
+            this.widthSegmentsInput.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.widthSegmentsInput.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.widthSegmentsInput.Name = "widthSegmentsInput";
+            this.widthSegmentsInput.Size = new System.Drawing.Size(72, 27);
+            this.widthSegmentsInput.TabIndex = 24;
+            this.widthSegmentsInput.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.widthSegmentsInput.ValueChanged += new System.EventHandler(this.widthSegmentsInput_ValueChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(24, 570);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(124, 20);
+            this.label16.TabIndex = 23;
+            this.label16.Text = "Height segments:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(24, 529);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(119, 20);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "Width segments:";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.triangulatedFillColorButton);
+            this.panel4.Controls.Add(this.exactFillColorButton);
+            this.panel4.Location = new System.Drawing.Point(118, 451);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(254, 63);
+            this.panel4.TabIndex = 21;
+            // 
+            // triangulatedFillColorButton
+            // 
+            this.triangulatedFillColorButton.AutoSize = true;
+            this.triangulatedFillColorButton.Location = new System.Drawing.Point(6, 36);
+            this.triangulatedFillColorButton.Name = "triangulatedFillColorButton";
+            this.triangulatedFillColorButton.Size = new System.Drawing.Size(111, 24);
+            this.triangulatedFillColorButton.TabIndex = 1;
+            this.triangulatedFillColorButton.Text = "triangulated";
+            this.triangulatedFillColorButton.UseVisualStyleBackColor = true;
+            // 
+            // exactFillColorButton
+            // 
+            this.exactFillColorButton.AutoSize = true;
+            this.exactFillColorButton.Checked = true;
+            this.exactFillColorButton.Location = new System.Drawing.Point(6, 6);
+            this.exactFillColorButton.Name = "exactFillColorButton";
+            this.exactFillColorButton.Size = new System.Drawing.Size(65, 24);
+            this.exactFillColorButton.TabIndex = 0;
+            this.exactFillColorButton.TabStop = true;
+            this.exactFillColorButton.Text = "exact";
+            this.exactFillColorButton.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(24, 459);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(69, 20);
+            this.label14.TabIndex = 20;
+            this.label14.Text = "Fill color:";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.definedNVectorButton);
+            this.panel3.Controls.Add(this.constantNVectorButton);
+            this.panel3.Location = new System.Drawing.Point(118, 394);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(255, 62);
+            this.panel3.TabIndex = 19;
+            // 
+            // definedNVectorButton
+            // 
+            this.definedNVectorButton.AutoSize = true;
+            this.definedNVectorButton.Enabled = false;
+            this.definedNVectorButton.Location = new System.Drawing.Point(6, 33);
+            this.definedNVectorButton.Name = "definedNVectorButton";
+            this.definedNVectorButton.Size = new System.Drawing.Size(107, 24);
+            this.definedNVectorButton.TabIndex = 2;
+            this.definedNVectorButton.TabStop = true;
+            this.definedNVectorButton.Text = "define own:";
+            this.definedNVectorButton.UseVisualStyleBackColor = true;
+            // 
+            // constantNVectorButton
+            // 
+            this.constantNVectorButton.AutoSize = true;
+            this.constantNVectorButton.Checked = true;
+            this.constantNVectorButton.Location = new System.Drawing.Point(6, 3);
+            this.constantNVectorButton.Name = "constantNVectorButton";
+            this.constantNVectorButton.Size = new System.Drawing.Size(156, 24);
+            this.constantNVectorButton.TabIndex = 1;
+            this.constantNVectorButton.TabStop = true;
+            this.constantNVectorButton.Text = "constant   ([0, 0, 1])";
+            this.constantNVectorButton.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -344,79 +491,6 @@ namespace Zad2
             this.ksValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ksValueSlider.ValueChanged += new System.EventHandler(this.ksValueSlider_ValueChanged);
             // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.definedNVectorButton);
-            this.panel3.Controls.Add(this.constantNVectorButton);
-            this.panel3.Location = new System.Drawing.Point(118, 394);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(255, 62);
-            this.panel3.TabIndex = 19;
-            // 
-            // constantNVectorButton
-            // 
-            this.constantNVectorButton.AutoSize = true;
-            this.constantNVectorButton.Checked = true;
-            this.constantNVectorButton.Location = new System.Drawing.Point(6, 3);
-            this.constantNVectorButton.Name = "constantNVectorButton";
-            this.constantNVectorButton.Size = new System.Drawing.Size(156, 24);
-            this.constantNVectorButton.TabIndex = 1;
-            this.constantNVectorButton.TabStop = true;
-            this.constantNVectorButton.Text = "constant   ([0, 0, 1])";
-            this.constantNVectorButton.UseVisualStyleBackColor = true;
-            // 
-            // definedNVectorButton
-            // 
-            this.definedNVectorButton.AutoSize = true;
-            this.definedNVectorButton.Enabled = false;
-            this.definedNVectorButton.Location = new System.Drawing.Point(6, 33);
-            this.definedNVectorButton.Name = "definedNVectorButton";
-            this.definedNVectorButton.Size = new System.Drawing.Size(107, 24);
-            this.definedNVectorButton.TabIndex = 2;
-            this.definedNVectorButton.TabStop = true;
-            this.definedNVectorButton.Text = "define own:";
-            this.definedNVectorButton.UseVisualStyleBackColor = true;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(24, 459);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(69, 20);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Fill color:";
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.triangulatedFillColorButton);
-            this.panel4.Controls.Add(this.exactFillColorButton);
-            this.panel4.Location = new System.Drawing.Point(118, 451);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(254, 63);
-            this.panel4.TabIndex = 21;
-            // 
-            // exactFillColorButton
-            // 
-            this.exactFillColorButton.AutoSize = true;
-            this.exactFillColorButton.Checked = true;
-            this.exactFillColorButton.Location = new System.Drawing.Point(6, 6);
-            this.exactFillColorButton.Name = "exactFillColorButton";
-            this.exactFillColorButton.Size = new System.Drawing.Size(65, 24);
-            this.exactFillColorButton.TabIndex = 0;
-            this.exactFillColorButton.TabStop = true;
-            this.exactFillColorButton.Text = "exact";
-            this.exactFillColorButton.UseVisualStyleBackColor = true;
-            // 
-            // triangulatedFillColorButton
-            // 
-            this.triangulatedFillColorButton.AutoSize = true;
-            this.triangulatedFillColorButton.Location = new System.Drawing.Point(6, 36);
-            this.triangulatedFillColorButton.Name = "triangulatedFillColorButton";
-            this.triangulatedFillColorButton.Size = new System.Drawing.Size(111, 24);
-            this.triangulatedFillColorButton.TabIndex = 1;
-            this.triangulatedFillColorButton.Text = "triangulated";
-            this.triangulatedFillColorButton.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -432,6 +506,12 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightSegmentsInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).EndInit();
@@ -441,10 +521,6 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.objectColorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdValueSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksValueSlider)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -484,6 +560,10 @@ namespace Zad2
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.RadioButton definedNVectorButton;
         private System.Windows.Forms.RadioButton constantNVectorButton;
+        private System.Windows.Forms.NumericUpDown heightSegmentsInput;
+        private System.Windows.Forms.NumericUpDown widthSegmentsInput;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
     }
 }
 

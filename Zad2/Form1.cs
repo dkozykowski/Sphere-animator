@@ -15,13 +15,24 @@ namespace Zad2
         private double kd;
         private double ks;
         private double M;
+
+        private int heightSegments = 10;
+        private int widthSegments = 10;
+
         private Color lightColor;
         private Color objectColor;
+
+        private List<Triangle> triangles;
+        private List<Point> vertices;
+
+        Bitmap backgroundBitmap;
+
         public Form1()
         {
             lightColor = Color.FromArgb(255, 255, 255);
             objectColor = Color.BlueViolet;
             InitializeComponent();
+            RedoMesh();
             FillLightColorPickerBox();
             FillObjectColorPickerBox();
         }
@@ -82,6 +93,43 @@ namespace Zad2
                 objectColor = dialog.Color;
             }
             FillObjectColorPickerBox();
+        }
+
+        private void widthSegmentsInput_ValueChanged(object sender, EventArgs e)
+        {
+            widthSegments = (int)widthSegmentsInput.Value;
+            RedoMesh();
+            Redraw();
+        }
+
+        private void heightSegmentsInput_ValueChanged(object sender, EventArgs e)
+        {
+            heightSegments = (int)heightSegmentsInput.Value;
+            RedoMesh();
+            Redraw();
+        }
+
+        private void RedoMesh()
+        {
+            backgroundBitmap = new Bitmap(650, 650);
+            Graphics graphics = Graphics.FromImage(backgroundBitmap);
+            graphics.Clear(Color.White);
+            Triangulator t = new Triangulator(ref triangles,
+                                              ref vertices, 
+                                              widthSegments, 
+                                              heightSegments, 
+                                              650 / 2);
+
+            foreach (Point vertex in vertices)
+            {
+                vertex.x += 650 / 2;
+                vertex.y += 650 / 2;
+            }
+            foreach (Triangle triangle in triangles)
+            {
+                triangle.Draw(graphics);
+            }
+            pictureBox1.Image = backgroundBitmap;
         }
     }
 }
