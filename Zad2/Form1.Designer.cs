@@ -39,10 +39,6 @@ namespace Zad2
             this.triangulatedFillColorButton = new System.Windows.Forms.RadioButton();
             this.exactFillColorButton = new System.Windows.Forms.RadioButton();
             this.label14 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.definedNVectorButton = new System.Windows.Forms.RadioButton();
-            this.constantNVectorButton = new System.Windows.Forms.RadioButton();
-            this.label13 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.animatedLightVersorButton = new System.Windows.Forms.RadioButton();
             this.constLightVersorButton = new System.Windows.Forms.RadioButton();
@@ -71,7 +67,6 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.heightSegmentsInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).BeginInit();
             this.panel4.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mValueSlider)).BeginInit();
@@ -97,8 +92,6 @@ namespace Zad2
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.panel4);
             this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.panel3);
-            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.lightColorPictureBox);
@@ -126,7 +119,7 @@ namespace Zad2
             // 
             // heightSegmentsInput
             // 
-            this.heightSegmentsInput.Location = new System.Drawing.Point(163, 568);
+            this.heightSegmentsInput.Location = new System.Drawing.Point(163, 507);
             this.heightSegmentsInput.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -149,7 +142,7 @@ namespace Zad2
             // 
             // widthSegmentsInput
             // 
-            this.widthSegmentsInput.Location = new System.Drawing.Point(163, 529);
+            this.widthSegmentsInput.Location = new System.Drawing.Point(163, 468);
             this.widthSegmentsInput.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -173,7 +166,7 @@ namespace Zad2
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(24, 570);
+            this.label16.Location = new System.Drawing.Point(24, 509);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(124, 20);
             this.label16.TabIndex = 23;
@@ -182,7 +175,7 @@ namespace Zad2
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(24, 529);
+            this.label15.Location = new System.Drawing.Point(24, 468);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(119, 20);
             this.label15.TabIndex = 22;
@@ -192,7 +185,7 @@ namespace Zad2
             // 
             this.panel4.Controls.Add(this.triangulatedFillColorButton);
             this.panel4.Controls.Add(this.exactFillColorButton);
-            this.panel4.Location = new System.Drawing.Point(118, 451);
+            this.panel4.Location = new System.Drawing.Point(118, 390);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(254, 63);
             this.panel4.TabIndex = 21;
@@ -222,53 +215,11 @@ namespace Zad2
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(24, 459);
+            this.label14.Location = new System.Drawing.Point(24, 398);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(69, 20);
             this.label14.TabIndex = 20;
             this.label14.Text = "Fill color:";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.definedNVectorButton);
-            this.panel3.Controls.Add(this.constantNVectorButton);
-            this.panel3.Location = new System.Drawing.Point(118, 394);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(255, 62);
-            this.panel3.TabIndex = 19;
-            // 
-            // definedNVectorButton
-            // 
-            this.definedNVectorButton.AutoSize = true;
-            this.definedNVectorButton.Enabled = false;
-            this.definedNVectorButton.Location = new System.Drawing.Point(6, 33);
-            this.definedNVectorButton.Name = "definedNVectorButton";
-            this.definedNVectorButton.Size = new System.Drawing.Size(107, 24);
-            this.definedNVectorButton.TabIndex = 2;
-            this.definedNVectorButton.TabStop = true;
-            this.definedNVectorButton.Text = "define own:";
-            this.definedNVectorButton.UseVisualStyleBackColor = true;
-            // 
-            // constantNVectorButton
-            // 
-            this.constantNVectorButton.AutoSize = true;
-            this.constantNVectorButton.Checked = true;
-            this.constantNVectorButton.Location = new System.Drawing.Point(6, 3);
-            this.constantNVectorButton.Name = "constantNVectorButton";
-            this.constantNVectorButton.Size = new System.Drawing.Size(156, 24);
-            this.constantNVectorButton.TabIndex = 1;
-            this.constantNVectorButton.TabStop = true;
-            this.constantNVectorButton.Text = "constant   ([0, 0, 1])";
-            this.constantNVectorButton.UseVisualStyleBackColor = true;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(24, 396);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(68, 20);
-            this.label13.TabIndex = 18;
-            this.label13.Text = "N vector:";
             // 
             // panel2
             // 
@@ -323,11 +274,11 @@ namespace Zad2
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(375, 143);
+            this.label11.Location = new System.Drawing.Point(368, 143);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(17, 20);
+            this.label11.Size = new System.Drawing.Size(33, 20);
             this.label11.TabIndex = 15;
-            this.label11.Text = "1";
+            this.label11.Text = "100";
             // 
             // label10
             // 
@@ -336,16 +287,18 @@ namespace Zad2
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(17, 20);
             this.label10.TabIndex = 14;
-            this.label10.Text = "0";
+            this.label10.Text = "1";
             // 
             // mValueSlider
             // 
             this.mValueSlider.Location = new System.Drawing.Point(102, 167);
-            this.mValueSlider.Maximum = 1000;
+            this.mValueSlider.Maximum = 100;
+            this.mValueSlider.Minimum = 1;
             this.mValueSlider.Name = "mValueSlider";
             this.mValueSlider.Size = new System.Drawing.Size(300, 56);
             this.mValueSlider.TabIndex = 13;
             this.mValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.mValueSlider.Value = 1;
             this.mValueSlider.ValueChanged += new System.EventHandler(this.mValueSlider_ValueChanged);
             // 
             // label9
@@ -510,8 +463,6 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).EndInit();
@@ -552,14 +503,10 @@ namespace Zad2
         private System.Windows.Forms.RadioButton constLightVersorButton;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.RadioButton animatedLightVersorButton;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.RadioButton triangulatedFillColorButton;
         private System.Windows.Forms.RadioButton exactFillColorButton;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.RadioButton definedNVectorButton;
-        private System.Windows.Forms.RadioButton constantNVectorButton;
         private System.Windows.Forms.NumericUpDown heightSegmentsInput;
         private System.Windows.Forms.NumericUpDown widthSegmentsInput;
         private System.Windows.Forms.Label label16;

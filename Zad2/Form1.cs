@@ -15,7 +15,10 @@ namespace Zad2
     {
         private double kd;
         private double ks;
-        private double M;
+        private int M;
+
+        private Point lightVersor;
+        private Point VVector;
 
         private int heightSegments = 10;
         private int widthSegments = 10;
@@ -49,9 +52,17 @@ namespace Zad2
         public Form1()
         {
             lightColor = Color.FromArgb(255, 255, 255);
-            objectColor = Color.BlueViolet;
+            objectColor = Color.BlanchedAlmond;
             BackgroundBitmapHeight = BackgroundBitmapWidth = 650;
+            lightVersor = new Point(0, 0, 1);
+            VVector = new Point(0, 0, 1);
+
             InitializeComponent();
+
+            kd = (double)kdValueSlider.Value / 1000;
+            ks = (double)ksValueSlider.Value / 1000;
+            M = mValueSlider.Value;
+
             CreateBackgroundBitmap();
             RedoMesh();
             FillLightColorPickerBox();
@@ -112,12 +123,48 @@ namespace Zad2
                     for (x = Math.Max(x, 0); x <= max; x++)
                     {
                         if (x >= 0 && x < BackgroundBitmapWidth && y >= 0 && y < BackgroundBitmapHeight)
-                            Bits[x + y * BackgroundBitmapWidth] = Color.BlanchedAlmond.ToArgb();
+                            Bits[x + y * BackgroundBitmapWidth] = GetARGBColorToFill(x, y);
                     }
                 }
 
                 foreach (AETNode node in AET) node.x += node.m;
             }
+        }
+
+        private int GetARGBColorToFill(int x, int y)
+        {
+            double _x, _y, _z, _radius;
+            _radius = BackgroundBitmapWidth / 2 + 5;
+            _x = x - BackgroundBitmapWidth / 2;
+            _y = y - BackgroundBitmapHeight / 2;
+            _z = Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
+            Point normalVersor = new Point(_x, _y, _z);
+            normalVersor.Normalise();
+
+            Color objectColor = GetObjectColorAtPos(x, y * BackgroundBitmapWidth);
+            double R, G, B;
+            double CosNL = Cos(normalVersor, lightVersor);
+            Point RVector = 2 * CosNL * normalVersor - lightVersor;
+            R = CosNL * kd * lightColor.R / 255 * objectColor.R / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.R / 255 * objectColor.R / 255;
+            G = CosNL * kd * lightColor.G / 255 * objectColor.G / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.G / 255 * objectColor.G / 255;
+            B = CosNL * kd * lightColor.B / 255 * objectColor.B / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.B / 255 * objectColor.B / 255;
+
+            R = Math.Min(1, Math.Max(0, R));
+            G = Math.Min(1, Math.Max(0, G));
+            B = Math.Min(1, Math.Max(0, B));
+
+            return Color.FromArgb((int)Math.Round(R * 255, 0), (int)Math.Round(G * 255, 0), (int)Math.Round(B * 255, 0)).ToArgb();
+        }
+
+        private double Cos(Point a, Point b)
+        {
+            return a.x * b.x + a.y * b.y + a.z * b.z;
+        }
+
+        private Color GetObjectColorAtPos(int x, int y)
+        {
+            if (objectColorSolidRadioButton.Checked == true) return objectColor;
+            else return objectColor;
         }
 
         private void FillLightColorPickerBox()
@@ -137,6 +184,23 @@ namespace Zad2
         }
 
         private void RedrawBackgroundBitmap()
+        {
+            Graphics graphics = Graphics.FromImage(backgroundBitmap);
+            graphics.Clear(Color.White);
+
+            foreach (Triangle triangle in triangles)
+            {
+                FillPentagonWithColor(triangle.points, triangle.sortOrder);
+            }
+
+            foreach (Triangle triangle in triangles)
+            {
+                triangle.Draw(graphics);
+            }
+            pictureBox1.Image = backgroundBitmap;
+        }
+
+        private void RedrawBackgroundBitmapParallel()
         {
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
             graphics.Clear(Color.White);
@@ -177,7 +241,8 @@ namespace Zad2
         }
         private void mValueSlider_ValueChanged(object sender, EventArgs e)
         {
-            M = (double)mValueSlider.Value / 1000;
+            M = mValueSlider.Value;
+            Text = M.ToString();
             RedrawBackgroundBitmap();
         }
 
