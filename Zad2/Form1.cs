@@ -98,8 +98,13 @@ namespace Zad2
             int R = 0, G = 0, B = 0;
             for (int i = 0; i < 3; i++)
             {
-                Color color = Color.FromArgb(GetARGBColorToFill((int)Math.Round(triangle.points[i].x, 0), 
-                                                                (int)Math.Round(triangle.points[i].y, 0)));
+                int _x = (int)Math.Round(triangle.points[i].x, 0);
+                _x = Math.Max(0, Math.Min(_x, backgroundBitmapWidth - 1));
+
+                int _y = (int)Math.Round(triangle.points[i].y, 0);
+                _y = Math.Max(0, Math.Min(_y, backgroundBitmapWidth - 1));
+
+                Color color = Color.FromArgb(GetARGBColorToFill(_x, _y));
                 R += color.R;
                 G += color.G;
                 B += color.B;
@@ -163,7 +168,8 @@ namespace Zad2
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
             graphics.Clear(Color.White);
 
-            foreach (Triangle triangle in triangles)
+            Parallel.ForEach(triangles, triangle =>
+            //foreach (Triangle triangle in triangles)
             {
                 if (exactFillColorButton.Checked)
                     PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
@@ -172,7 +178,7 @@ namespace Zad2
                     int color = GetARGBInterpolatedColorToFill(triangle);
                     PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
                 }
-            }
+            });
 
             foreach (Triangle triangle in triangles)
             {
