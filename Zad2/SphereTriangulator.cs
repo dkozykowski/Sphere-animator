@@ -63,26 +63,25 @@ namespace Zad2
             graphics.DrawLine(pen, points[1], points[2]);
         }
     }
-    public class Triangulator
+    public static class SphereTriangulator
     {
-        private List<List<Point>> _vertices;
-        private readonly double phiStart = 0;
-        private readonly double phiLength = Math.PI * 2;
-        private readonly double thetaStart = 0;
-        private readonly double thetaLength = Math.PI / 2;
-        public Triangulator(ref List<Triangle> triangles, 
+        private static readonly double phiStart = 0;
+        private static readonly double phiLength = Math.PI * 2;
+        private static readonly double thetaStart = 0;
+        private static readonly double thetaLength = Math.PI / 2;
+        public static void CreateMesh(ref List<Triangle> triangles, 
                             ref List<Point> vertices, 
                             int heightSegments, 
                             int widthSegments, 
                             int radius)
         {
-            _vertices = new List<List<Point>>();
+            List<List<Point>> _vertices; _vertices = new List<List<Point>>();
 
-            GenerateVertices(radius, heightSegments, widthSegments);
-            CopyVertices(ref vertices);
-            GenerateTriangles(ref triangles, heightSegments, widthSegments);
+            GenerateVertices(radius, heightSegments, widthSegments, _vertices);
+            CopyVertices(ref vertices, _vertices);
+            GenerateTriangles(ref triangles, heightSegments, widthSegments, _vertices);
         }
-        private void CopyVertices(ref List<Point> vertices)
+        private static void CopyVertices(ref List<Point> vertices, List<List<Point>> _vertices)
         {
             vertices = new List<Point>();
             foreach (List<Point> verticesList in _vertices)
@@ -93,7 +92,7 @@ namespace Zad2
                 }
             }
         }
-        private void GenerateVertices(int radius, int heightSegments, int widthSegments)
+        private static void GenerateVertices(int radius, int heightSegments, int widthSegments, List<List<Point>> _vertices)
         {
             for (int y = 0; y <= heightSegments; y++)
             {
@@ -110,7 +109,7 @@ namespace Zad2
                 _vertices.Add(verticesRow);
             }
         }
-        private void GenerateTriangles(ref List<Triangle> triangles, int heightSegments, int widthSegments)
+        private static void GenerateTriangles(ref List<Triangle> triangles, int heightSegments, int widthSegments, List<List<Point>> _vertices)
         {
             triangles = new List<Triangle>();
             for (int y = 0; y < heightSegments; y++)

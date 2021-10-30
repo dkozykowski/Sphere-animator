@@ -298,7 +298,7 @@ namespace Zad2
             this.mValueSlider.Size = new System.Drawing.Size(300, 56);
             this.mValueSlider.TabIndex = 13;
             this.mValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.mValueSlider.Value = 1;
+            this.mValueSlider.Value = 5;
             this.mValueSlider.ValueChanged += new System.EventHandler(this.mValueSlider_ValueChanged);
             // 
             // label9
@@ -396,6 +396,7 @@ namespace Zad2
             this.kdValueSlider.Size = new System.Drawing.Size(300, 56);
             this.kdValueSlider.TabIndex = 5;
             this.kdValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.kdValueSlider.Value = 700;
             this.kdValueSlider.ValueChanged += new System.EventHandler(this.kdValueSlider_ValueChanged);
             // 
             // label4
@@ -442,6 +443,7 @@ namespace Zad2
             this.ksValueSlider.Size = new System.Drawing.Size(300, 56);
             this.ksValueSlider.TabIndex = 0;
             this.ksValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.ksValueSlider.Value = 300;
             this.ksValueSlider.ValueChanged += new System.EventHandler(this.ksValueSlider_ValueChanged);
             // 
             // Form1
