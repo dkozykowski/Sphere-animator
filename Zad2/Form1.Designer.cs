@@ -31,6 +31,12 @@ namespace Zad2
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.loadNormalMappingButton = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.lightColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.kValueSlider = new System.Windows.Forms.TrackBar();
+            this.label13 = new System.Windows.Forms.Label();
             this.heightSegmentsInput = new System.Windows.Forms.NumericUpDown();
             this.widthSegmentsInput = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
@@ -43,7 +49,6 @@ namespace Zad2
             this.animatedLightVersorButton = new System.Windows.Forms.RadioButton();
             this.constLightVersorButton = new System.Windows.Forms.RadioButton();
             this.label12 = new System.Windows.Forms.Label();
-            this.lightColorPictureBox = new System.Windows.Forms.PictureBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.mValueSlider = new System.Windows.Forms.TrackBar();
@@ -62,13 +67,15 @@ namespace Zad2
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ksValueSlider = new System.Windows.Forms.TrackBar();
+            this.useNormalMapCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kValueSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightSegmentsInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mValueSlider)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectColorPictureBox)).BeginInit();
@@ -86,6 +93,13 @@ namespace Zad2
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.useNormalMapCheckbox);
+            this.groupBox1.Controls.Add(this.loadNormalMappingButton);
+            this.groupBox1.Controls.Add(this.label18);
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Controls.Add(this.lightColorPictureBox);
+            this.groupBox1.Controls.Add(this.kValueSlider);
+            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.heightSegmentsInput);
             this.groupBox1.Controls.Add(this.widthSegmentsInput);
             this.groupBox1.Controls.Add(this.label16);
@@ -94,7 +108,6 @@ namespace Zad2
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.lightColorPictureBox);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.mValueSlider);
@@ -117,9 +130,67 @@ namespace Zad2
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
             // 
+            // loadNormalMappingButton
+            // 
+            this.loadNormalMappingButton.Location = new System.Drawing.Point(215, 612);
+            this.loadNormalMappingButton.Name = "loadNormalMappingButton";
+            this.loadNormalMappingButton.Size = new System.Drawing.Size(142, 28);
+            this.loadNormalMappingButton.TabIndex = 30;
+            this.loadNormalMappingButton.Text = "Load map";
+            this.loadNormalMappingButton.UseVisualStyleBackColor = true;
+            this.loadNormalMappingButton.Click += new System.EventHandler(this.loadNormalMappingButton_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(375, 203);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(17, 20);
+            this.label18.TabIndex = 29;
+            this.label18.Text = "1";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(111, 203);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(17, 20);
+            this.label17.TabIndex = 28;
+            this.label17.Text = "0";
+            // 
+            // lightColorPictureBox
+            // 
+            this.lightColorPictureBox.Location = new System.Drawing.Point(113, 274);
+            this.lightColorPictureBox.Name = "lightColorPictureBox";
+            this.lightColorPictureBox.Size = new System.Drawing.Size(46, 32);
+            this.lightColorPictureBox.TabIndex = 9;
+            this.lightColorPictureBox.TabStop = false;
+            this.lightColorPictureBox.Click += new System.EventHandler(this.colorPictureBox_Click);
+            // 
+            // kValueSlider
+            // 
+            this.kValueSlider.Location = new System.Drawing.Point(102, 227);
+            this.kValueSlider.Maximum = 100;
+            this.kValueSlider.Minimum = 1;
+            this.kValueSlider.Name = "kValueSlider";
+            this.kValueSlider.Size = new System.Drawing.Size(300, 56);
+            this.kValueSlider.TabIndex = 27;
+            this.kValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.kValueSlider.Value = 100;
+            this.kValueSlider.ValueChanged += new System.EventHandler(this.kValueSlider_ValueChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(24, 227);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(60, 20);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "K value:";
+            // 
             // heightSegmentsInput
             // 
-            this.heightSegmentsInput.Location = new System.Drawing.Point(163, 507);
+            this.heightSegmentsInput.Location = new System.Drawing.Point(163, 572);
             this.heightSegmentsInput.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -142,7 +213,7 @@ namespace Zad2
             // 
             // widthSegmentsInput
             // 
-            this.widthSegmentsInput.Location = new System.Drawing.Point(163, 468);
+            this.widthSegmentsInput.Location = new System.Drawing.Point(163, 533);
             this.widthSegmentsInput.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -166,7 +237,7 @@ namespace Zad2
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(24, 509);
+            this.label16.Location = new System.Drawing.Point(24, 574);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(124, 20);
             this.label16.TabIndex = 23;
@@ -175,7 +246,7 @@ namespace Zad2
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(24, 468);
+            this.label15.Location = new System.Drawing.Point(24, 533);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(119, 20);
             this.label15.TabIndex = 22;
@@ -185,7 +256,7 @@ namespace Zad2
             // 
             this.panel4.Controls.Add(this.triangulatedFillColorButton);
             this.panel4.Controls.Add(this.exactFillColorButton);
-            this.panel4.Location = new System.Drawing.Point(118, 390);
+            this.panel4.Location = new System.Drawing.Point(118, 455);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(254, 63);
             this.panel4.TabIndex = 21;
@@ -215,7 +286,7 @@ namespace Zad2
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(24, 398);
+            this.label14.Location = new System.Drawing.Point(24, 463);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(69, 20);
             this.label14.TabIndex = 20;
@@ -225,7 +296,7 @@ namespace Zad2
             // 
             this.panel2.Controls.Add(this.animatedLightVersorButton);
             this.panel2.Controls.Add(this.constLightVersorButton);
-            this.panel2.Location = new System.Drawing.Point(118, 332);
+            this.panel2.Location = new System.Drawing.Point(118, 397);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(256, 56);
             this.panel2.TabIndex = 17;
@@ -256,20 +327,11 @@ namespace Zad2
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(24, 335);
+            this.label12.Location = new System.Drawing.Point(24, 400);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(89, 20);
             this.label12.TabIndex = 16;
             this.label12.Text = "Light versor:";
-            // 
-            // lightColorPictureBox
-            // 
-            this.lightColorPictureBox.Location = new System.Drawing.Point(113, 209);
-            this.lightColorPictureBox.Name = "lightColorPictureBox";
-            this.lightColorPictureBox.Size = new System.Drawing.Size(46, 32);
-            this.lightColorPictureBox.TabIndex = 9;
-            this.lightColorPictureBox.TabStop = false;
-            this.lightColorPictureBox.Click += new System.EventHandler(this.colorPictureBox_Click);
             // 
             // label11
             // 
@@ -315,7 +377,7 @@ namespace Zad2
             this.panel1.Controls.Add(this.objectColorPictureBox);
             this.panel1.Controls.Add(this.objectColorTextureRadioButton);
             this.panel1.Controls.Add(this.objectColorSolidRadioButton);
-            this.panel1.Location = new System.Drawing.Point(118, 257);
+            this.panel1.Location = new System.Drawing.Point(118, 322);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(257, 71);
             this.panel1.TabIndex = 11;
@@ -355,7 +417,7 @@ namespace Zad2
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(24, 273);
+            this.label8.Location = new System.Drawing.Point(24, 338);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(94, 20);
             this.label8.TabIndex = 10;
@@ -364,7 +426,7 @@ namespace Zad2
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(24, 215);
+            this.label7.Location = new System.Drawing.Point(24, 280);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(83, 20);
             this.label7.TabIndex = 8;
@@ -446,6 +508,18 @@ namespace Zad2
             this.ksValueSlider.Value = 300;
             this.ksValueSlider.ValueChanged += new System.EventHandler(this.ksValueSlider_ValueChanged);
             // 
+            // useNormalMapCheckbox
+            // 
+            this.useNormalMapCheckbox.AutoSize = true;
+            this.useNormalMapCheckbox.Location = new System.Drawing.Point(27, 615);
+            this.useNormalMapCheckbox.Name = "useNormalMapCheckbox";
+            this.useNormalMapCheckbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.useNormalMapCheckbox.Size = new System.Drawing.Size(143, 24);
+            this.useNormalMapCheckbox.TabIndex = 31;
+            this.useNormalMapCheckbox.Text = ":Use normal map";
+            this.useNormalMapCheckbox.UseVisualStyleBackColor = true;
+            this.useNormalMapCheckbox.CheckedChanged += new System.EventHandler(this.useNormalMapCheckbox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -461,13 +535,14 @@ namespace Zad2
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kValueSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightSegmentsInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthSegmentsInput)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mValueSlider)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -513,6 +588,12 @@ namespace Zad2
         private System.Windows.Forms.NumericUpDown widthSegmentsInput;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TrackBar kValueSlider;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button loadNormalMappingButton;
+        private System.Windows.Forms.CheckBox useNormalMapCheckbox;
     }
 }
 

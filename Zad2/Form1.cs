@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,6 +17,7 @@ namespace Zad2
         private double kd;
         private double ks;
         private int M;
+        private double K;
 
         private Point lightVersor;
         private Point VVector;
@@ -39,6 +41,10 @@ namespace Zad2
         private Int32[] sourceImageBits;
         private GCHandle sourceImageBitsHandle;
 
+        private Bitmap normalMapBitmap;
+        private Int32[] normalMapBits;
+        private GCHandle normalMapBitsHandle;
+
         private Timer timer = null;
         private int tickCounter;
 
@@ -56,6 +62,7 @@ namespace Zad2
             widthSegments = (int)widthSegmentsInput.Value;
             kd = (double)kdValueSlider.Value / 1000;
             ks = (double)ksValueSlider.Value / 1000;
+            K = (double)kValueSlider.Value / 100;
             M = mValueSlider.Value;
 
             CreateBackgroundBitmap();
@@ -66,13 +73,7 @@ namespace Zad2
 
         private int GetARGBColorToFill(int x, int y)
         {
-            double _x, _y, _z, _radius;
-            _radius = backgroundBitmapWidth / 2 + 5;
-            _x = x - backgroundBitmapWidth / 2;
-            _y = y - backgroundBitmapHeight / 2;
-            _z = Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
-            Point normalVersor = new Point(_x, _y, _z);
-            normalVersor.Normalise();
+            Point normalVersor = GetNormalVersor(x, y);
 
             Color objectColor = GetObjectColorAtPos(x, y);
             double R, G, B;
@@ -90,6 +91,25 @@ namespace Zad2
             B = Math.Min(1, Math.Max(0, B));
 
             return Color.FromArgb((int)Math.Round(R * 255, 0), (int)Math.Round(G * 255, 0), (int)Math.Round(B * 255, 0)).ToArgb();
+        }
+
+        private Point GetNormalVersor(int x, int y)
+        {
+            double _x, _y, _z, _radius;
+            _radius = backgroundBitmapWidth / 2 + 5;
+            _x = x - backgroundBitmapWidth / 2;
+            _y = y - backgroundBitmapHeight / 2;
+            _z = Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
+            Point normalVersor = new Point(_x, _y, _z);
+            normalVersor.Normalise();
+
+            if (useNormalMapCheckbox.Checked)
+            {
+                Point textureVersor = new Point(Color.FromArgb(normalMapBits[x + y * backgroundBitmapWidth]));
+                textureVersor.Normalise();
+                normalVersor = K * normalVersor - (K - 1) * textureVersor;
+            }
+            return normalVersor;
         }
 
         private double Cos(Point a, Point b)
@@ -131,23 +151,6 @@ namespace Zad2
             {
                 PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
             }
-
-            foreach (Triangle triangle in triangles)
-            {
-                triangle.Draw(graphics);
-            }
-            pictureBox1.Image = backgroundBitmap;
-        }
-
-        private void RedrawBackgroundBitmapParallel()
-        {
-            Graphics graphics = Graphics.FromImage(backgroundBitmap);
-            graphics.Clear(Color.White);
-
-            Parallel.ForEach(triangles, triangle =>
-            {
-                PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
-            });
 
             foreach (Triangle triangle in triangles)
             {
@@ -252,13 +255,13 @@ namespace Zad2
                     timer.Dispose();
                 }
                 lightVersor = new Point(0, 0, 1);
-                RedrawBackgroundBitmapParallel();
+                RedrawBackgroundBitmap();
             }
             else
             {
                 tickCounter = 0;
                 timer = new Timer();
-                timer.Interval = 75;
+                timer.Interval = 40;
                 timer.Tick += new EventHandler(UpdateLightVector);
                 timer.Start();
             }
@@ -266,7 +269,7 @@ namespace Zad2
 
         private void UpdateLightVector(Object myObject, EventArgs myEventArgs)
         {
-            double MAX = 150;
+            double MAX = 120;
             if (tickCounter == MAX) tickCounter = 0;
             double _x, _y, _z;
             _z = 0.2;
@@ -276,12 +279,13 @@ namespace Zad2
             lightVersor = new Point(_x, _y, _z);
             lightVersor.Normalise();
 
-            RedrawBackgroundBitmapParallel();
+            RedrawBackgroundBitmap();
             tickCounter++;
         }
 
         private void objectColorSolidRadioButton_CheckedChanged(object sender, EventArgs e)
         {
+            StopTimer();
             if (objectColorTextureRadioButton.Checked == true)
             {
                 OpenFileDialog dialog = new OpenFileDialog();
@@ -311,7 +315,57 @@ namespace Zad2
                     objectColorSolidRadioButton.Checked = true;
                 }
             }
+            ContinueTimer();
             RedrawBackgroundBitmap();
+        }
+
+        private void loadNormalMappingButton_Click(object sender, EventArgs e)
+        {
+            StopTimer();
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            dialog.InitialDirectory = Path.GetFullPath("..\\..\\..\\normal_maps");
+            dialog.Title = "Please select a normal map file.";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Image normalMap = new Bitmap(dialog.FileName);
+
+
+                normalMapBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
+                normalMapBitsHandle = GCHandle.Alloc(normalMapBits, GCHandleType.Pinned);
+                normalMapBitmap = new Bitmap(backgroundBitmapWidth,
+                                              backgroundBitmapHeight,
+                                              backgroundBitmapWidth * 4,
+                                              System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
+                                              normalMapBitsHandle.AddrOfPinnedObject());
+
+                Graphics graphics = Graphics.FromImage(normalMapBitmap);
+                graphics.DrawImage(normalMap, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+            }
+            ContinueTimer();
+            RedrawBackgroundBitmap();
+        }
+
+        private void kValueSlider_ValueChanged(object sender, EventArgs e)
+        {
+            K = (double)kValueSlider.Value / 100;
+            RedrawBackgroundBitmap();
+        }
+
+        private void useNormalMapCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (useNormalMapCheckbox.Checked && normalMapBitmap == null) loadNormalMappingButton_Click(sender, e);
+            RedrawBackgroundBitmap();
+        }
+
+        private void StopTimer()
+        {
+            if (timer != null) timer.Stop();
+        }
+        private void ContinueTimer()
+        {
+            if (timer != null) timer.Start();
         }
     }
 }
