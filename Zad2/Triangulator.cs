@@ -9,7 +9,7 @@ namespace Zad2
 {
     public class Point
     {
-        public int x, y, z;
+        public double x, y, z;
         public Point(int x, int y, int z)
         {
             this.x = x;
@@ -18,27 +18,37 @@ namespace Zad2
         }
         public Point(double x, double y, double z)
         {
-            this.x = (int)Math.Round(x, 0);
-            this.y = (int)Math.Round(y, 0);
-            this.z = (int)Math.Round(z, 0);
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
-        public static implicit operator System.Drawing.Point(Point p) => new System.Drawing.Point(p.x, p.y);
+        public bool IsSame(Point b)
+        {
+            return (x == b.x && y == b.y);
+        }
+        public static implicit operator System.Drawing.Point(Point p) => new System.Drawing.Point((int)Math.Round(p.x, 0), (int)Math.Round(p.y, 0));
+        public static implicit operator (double x, double y)(Point p) => (p.x, p.y);
+        public static implicit operator PointF(Point p) => new PointF((int)Math.Round(p.x, 0), (int)Math.Round(p.y, 0));
     }
     public class Triangle
     {
-        public Point a, b, c;
+        public List<Point> points;
+        public List<int> sortOrder;
         public Triangle(Point a, Point b, Point c)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            points = new List<Point>();
+            sortOrder = new List<int>() { 0, 1, 2 };
+            points.Add(a);
+            points.Add(b);
+            points.Add(c);
+            points.Sort((a, b) => a.y == b.y ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y)); // sort ascending relative to Point.y 
         }
         public void Draw(Graphics graphics)
         {
             Pen pen = new Pen(Brushes.Black);
-            graphics.DrawLine(pen, a, b);
-            graphics.DrawLine(pen, a, c);
-            graphics.DrawLine(pen, b, c);
+            graphics.DrawLine(pen, points[0], points[1]);
+            graphics.DrawLine(pen, points[0], points[2]);
+            graphics.DrawLine(pen, points[1], points[2]);
         }
     }
     public class Triangulator
@@ -103,7 +113,13 @@ namespace Zad2
                     triangles.Add(new Triangle(vertexA, vertexB, vertexD));
 
                     if (y != heightSegments - 1 || thetaStart + thetaLength < Math.PI)
-                        triangles.Add(new Triangle(vertexB, vertexC, vertexD));
+                    {
+                        if (!vertexB.IsSame(vertexC) && !vertexB.IsSame(vertexD) && !vertexD.IsSame(vertexB))
+                        {
+                            triangles.Add(new Triangle(vertexB, vertexC, vertexD));
+                        }
+                    }
+                        
                 }
             }
         }

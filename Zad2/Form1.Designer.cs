@@ -128,7 +128,7 @@ namespace Zad2
             // 
             this.heightSegmentsInput.Location = new System.Drawing.Point(163, 568);
             this.heightSegmentsInput.Maximum = new decimal(new int[] {
-            30,
+            1000,
             0,
             0,
             0});
@@ -151,7 +151,7 @@ namespace Zad2
             // 
             this.widthSegmentsInput.Location = new System.Drawing.Point(163, 529);
             this.widthSegmentsInput.Maximum = new decimal(new int[] {
-            30,
+            1000,
             0,
             0,
             0});
