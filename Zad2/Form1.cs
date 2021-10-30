@@ -20,8 +20,8 @@ namespace Zad2
         private Point lightVersor;
         private Point VVector;
 
-        private int heightSegments = 10;
-        private int widthSegments = 10;
+        private int heightSegments;
+        private int widthSegments;
 
         private Color lightColor;
         private Color objectColor;
@@ -34,6 +34,9 @@ namespace Zad2
         private int BackgroundBitmapHeight;
         private int BackgroundBitmapWidth;
         private GCHandle BitsHandle;
+
+        private Timer timer = null;
+        private int tickCounter;
 
         class AETNode
         {
@@ -59,6 +62,8 @@ namespace Zad2
 
             InitializeComponent();
 
+            heightSegments = (int)heightSegmentsInput.Value;
+            widthSegments = (int)widthSegmentsInput.Value;
             kd = (double)kdValueSlider.Value / 1000;
             ks = (double)ksValueSlider.Value / 1000;
             M = mValueSlider.Value;
@@ -145,9 +150,12 @@ namespace Zad2
             double R, G, B;
             double CosNL = Cos(normalVersor, lightVersor);
             Point RVector = 2 * CosNL * normalVersor - lightVersor;
-            R = CosNL * kd * lightColor.R / 255 * objectColor.R / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.R / 255 * objectColor.R / 255;
-            G = CosNL * kd * lightColor.G / 255 * objectColor.G / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.G / 255 * objectColor.G / 255;
-            B = CosNL * kd * lightColor.B / 255 * objectColor.B / 255 + Math.Pow(Cos(VVector, RVector), M) * ks * lightColor.B / 255 * objectColor.B / 255;
+
+            double VRcos = Math.Pow(Math.Max(0, Cos(VVector, RVector)), M);
+
+            R = CosNL * kd * lightColor.R / 255 * objectColor.R / 255 + VRcos * ks * lightColor.R / 255 * objectColor.R / 255;
+            G = CosNL * kd * lightColor.G / 255 * objectColor.G / 255 + VRcos * ks * lightColor.G / 255 * objectColor.G / 255;
+            B = CosNL * kd * lightColor.B / 255 * objectColor.B / 255 + VRcos * ks * lightColor.B / 255 * objectColor.B / 255;
 
             R = Math.Min(1, Math.Max(0, R));
             G = Math.Min(1, Math.Max(0, G));
@@ -293,6 +301,40 @@ namespace Zad2
                 vertex.y += BackgroundBitmapHeight / 2;
             }
             RedrawBackgroundBitmap();
+        }
+
+        private void constLightVersorButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (constLightVersorButton.Checked == true)
+            {
+                if (timer != null) timer.Stop();
+                lightVersor = new Point(0, 0, 1);
+            }
+            else
+            {
+                tickCounter = 0;
+                Timer timer = new Timer();
+                timer.Interval = 75;
+                timer.Tick += new EventHandler(UpdateTimer);
+                timer.Start();
+            }
+        }
+
+        private void UpdateTimer(Object myObject, EventArgs myEventArgs)
+        {
+            double MAX = 150;
+            this.Text = tickCounter.ToString();
+            if (tickCounter == MAX) tickCounter = 0;
+            double _x, _y, _z;
+            _z = 0.2;
+            _x = Math.Cos(tickCounter / MAX * Math.PI * 2);
+            _y = Math.Sin(tickCounter / MAX * Math.PI * 2);
+
+            lightVersor = new Point(_x, _y, _z);
+            lightVersor.Normalise();
+
+            RedrawBackgroundBitmapParallel();
+            tickCounter++;
         }
     }
 }

@@ -134,7 +134,7 @@ namespace Zad2
             this.heightSegmentsInput.Size = new System.Drawing.Size(72, 27);
             this.heightSegmentsInput.TabIndex = 25;
             this.heightSegmentsInput.Value = new decimal(new int[] {
-            10,
+            20,
             0,
             0,
             0});
@@ -157,7 +157,7 @@ namespace Zad2
             this.widthSegmentsInput.Size = new System.Drawing.Size(72, 27);
             this.widthSegmentsInput.TabIndex = 24;
             this.widthSegmentsInput.Value = new decimal(new int[] {
-            15,
+            20,
             0,
             0,
             0});
@@ -233,7 +233,6 @@ namespace Zad2
             // animatedLightVersorButton
             // 
             this.animatedLightVersorButton.AutoSize = true;
-            this.animatedLightVersorButton.Enabled = false;
             this.animatedLightVersorButton.Location = new System.Drawing.Point(6, 33);
             this.animatedLightVersorButton.Name = "animatedLightVersorButton";
             this.animatedLightVersorButton.Size = new System.Drawing.Size(93, 24);
@@ -252,6 +251,7 @@ namespace Zad2
             this.constLightVersorButton.TabStop = true;
             this.constLightVersorButton.Text = "constant   ([0, 0, 1])";
             this.constLightVersorButton.UseVisualStyleBackColor = true;
+            this.constLightVersorButton.CheckedChanged += new System.EventHandler(this.constLightVersorButton_CheckedChanged);
             // 
             // label12
             // 
