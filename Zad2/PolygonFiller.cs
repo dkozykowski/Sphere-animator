@@ -21,7 +21,10 @@ namespace Zad2
                 this.m = m;
             }
         }
-        public static void FillPentagonWithColor(List<Point> points, List<int> sortOrder, Action<int, int> DrawPixel)
+        public static void FillPentagonWithColor(List<Point> points,
+                                                 List<int> sortOrder, 
+                                                 Action<int, int, int> FillPixel, 
+                                                 int color = -1)
         {
             int n = points.Count;
             int index = 0;
@@ -74,7 +77,7 @@ namespace Zad2
                     int max = (int)Math.Round(AET[i + 1].x, 0);
                     for (x = Math.Max(x, 0); x <= max; x++)
                     {
-                        DrawPixel(x, y);
+                        FillPixel(x, y, color);
                     }
                 }
 

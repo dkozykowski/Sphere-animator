@@ -93,6 +93,22 @@ namespace Zad2
             return Color.FromArgb((int)Math.Round(R * 255, 0), (int)Math.Round(G * 255, 0), (int)Math.Round(B * 255, 0)).ToArgb();
         }
 
+        private int GetARGBInterpolatedColorToFill(Triangle triangle)
+        {
+            int R = 0, G = 0, B = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                Color color = Color.FromArgb(GetARGBColorToFill((int)Math.Round(triangle.points[i].x, 0), 
+                                                                (int)Math.Round(triangle.points[i].y, 0)));
+                R += color.R;
+                G += color.G;
+                B += color.B;
+            }
+
+
+            return Color.FromArgb(R / 3, G / 3, B / 3).ToArgb();
+        }
+
         private Point GetNormalVersor(int x, int y)
         {
             double _x, _y, _z, _radius;
@@ -149,7 +165,13 @@ namespace Zad2
 
             foreach (Triangle triangle in triangles)
             {
-                PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                if (exactFillColorButton.Checked)
+                    PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                else
+                {
+                    int color = GetARGBInterpolatedColorToFill(triangle);
+                    PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                }
             }
 
             foreach (Triangle triangle in triangles)
@@ -159,10 +181,14 @@ namespace Zad2
             pictureBox1.Image = backgroundBitmap;
         }
 
-        private void DrawPixel(int x, int y)
+        private void DrawPixel(int x, int y, int color = -1)
         {
             if (x >= 0 && x < backgroundBitmapWidth && y >= 0 && y < backgroundBitmapHeight)
-                backgroundBits[x + y * backgroundBitmapWidth] = GetARGBColorToFill(x, y);
+            {
+                if (color == -1) color = GetARGBColorToFill(x, y);
+
+                backgroundBits[x + y * backgroundBitmapWidth] = color;
+            }
         }
 
         private void CreateBackgroundBitmap()
@@ -190,7 +216,6 @@ namespace Zad2
         private void mValueSlider_ValueChanged(object sender, EventArgs e)
         {
             M = mValueSlider.Value;
-            Text = M.ToString();
             RedrawBackgroundBitmap();
         }
 
@@ -366,6 +391,11 @@ namespace Zad2
         private void ContinueTimer()
         {
             if (timer != null) timer.Start();
+        }
+
+        private void exactFillColorButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RedrawBackgroundBitmap();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Zad2
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.useNormalMapCheckbox = new System.Windows.Forms.CheckBox();
             this.loadNormalMappingButton = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -67,7 +68,6 @@ namespace Zad2
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ksValueSlider = new System.Windows.Forms.TrackBar();
-            this.useNormalMapCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
@@ -129,6 +129,18 @@ namespace Zad2
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
+            // 
+            // useNormalMapCheckbox
+            // 
+            this.useNormalMapCheckbox.AutoSize = true;
+            this.useNormalMapCheckbox.Location = new System.Drawing.Point(27, 615);
+            this.useNormalMapCheckbox.Name = "useNormalMapCheckbox";
+            this.useNormalMapCheckbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.useNormalMapCheckbox.Size = new System.Drawing.Size(143, 24);
+            this.useNormalMapCheckbox.TabIndex = 31;
+            this.useNormalMapCheckbox.Text = ":Use normal map";
+            this.useNormalMapCheckbox.UseVisualStyleBackColor = true;
+            this.useNormalMapCheckbox.CheckedChanged += new System.EventHandler(this.useNormalMapCheckbox_CheckedChanged);
             // 
             // loadNormalMappingButton
             // 
@@ -282,6 +294,7 @@ namespace Zad2
             this.exactFillColorButton.TabStop = true;
             this.exactFillColorButton.Text = "exact";
             this.exactFillColorButton.UseVisualStyleBackColor = true;
+            this.exactFillColorButton.CheckedChanged += new System.EventHandler(this.exactFillColorButton_CheckedChanged);
             // 
             // label14
             // 
@@ -508,18 +521,6 @@ namespace Zad2
             this.ksValueSlider.Value = 300;
             this.ksValueSlider.ValueChanged += new System.EventHandler(this.ksValueSlider_ValueChanged);
             // 
-            // useNormalMapCheckbox
-            // 
-            this.useNormalMapCheckbox.AutoSize = true;
-            this.useNormalMapCheckbox.Location = new System.Drawing.Point(27, 615);
-            this.useNormalMapCheckbox.Name = "useNormalMapCheckbox";
-            this.useNormalMapCheckbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.useNormalMapCheckbox.Size = new System.Drawing.Size(143, 24);
-            this.useNormalMapCheckbox.TabIndex = 31;
-            this.useNormalMapCheckbox.Text = ":Use normal map";
-            this.useNormalMapCheckbox.UseVisualStyleBackColor = true;
-            this.useNormalMapCheckbox.CheckedChanged += new System.EventHandler(this.useNormalMapCheckbox_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -531,7 +532,7 @@ namespace Zad2
             this.MaximumSize = new System.Drawing.Size(1128, 726);
             this.MinimumSize = new System.Drawing.Size(1128, 726);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Sphere animator";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
