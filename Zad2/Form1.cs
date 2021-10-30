@@ -30,10 +30,14 @@ namespace Zad2
         private List<Point> vertices;
 
         private Bitmap backgroundBitmap;
-        private Int32[] Bits;
-        private int BackgroundBitmapHeight;
-        private int BackgroundBitmapWidth;
-        private GCHandle BitsHandle;
+        private Int32[] backgroundBits;
+        private GCHandle backgroundBitsHandle;
+        private int backgroundBitmapHeight;
+        private int backgroundBitmapWidth;
+
+        private Bitmap sourceImageBitmap;
+        private Int32[] sourceImageBits;
+        private GCHandle sourceImageBitsHandle;
 
         private Timer timer = null;
         private int tickCounter;
@@ -42,7 +46,7 @@ namespace Zad2
         {
             lightColor = Color.FromArgb(255, 255, 255);
             objectColor = Color.BlanchedAlmond;
-            BackgroundBitmapHeight = BackgroundBitmapWidth = 650;
+            backgroundBitmapHeight = backgroundBitmapWidth = 650;
             lightVersor = new Point(0, 0, 1);
             VVector = new Point(0, 0, 1);
 
@@ -63,14 +67,14 @@ namespace Zad2
         private int GetARGBColorToFill(int x, int y)
         {
             double _x, _y, _z, _radius;
-            _radius = BackgroundBitmapWidth / 2 + 5;
-            _x = x - BackgroundBitmapWidth / 2;
-            _y = y - BackgroundBitmapHeight / 2;
+            _radius = backgroundBitmapWidth / 2 + 5;
+            _x = x - backgroundBitmapWidth / 2;
+            _y = y - backgroundBitmapHeight / 2;
             _z = Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
             Point normalVersor = new Point(_x, _y, _z);
             normalVersor.Normalise();
 
-            Color objectColor = GetObjectColorAtPos(x, y * BackgroundBitmapWidth);
+            Color objectColor = GetObjectColorAtPos(x, y);
             double R, G, B;
             double CosNL = Cos(normalVersor, lightVersor);
             Point RVector = 2 * CosNL * normalVersor - lightVersor;
@@ -96,7 +100,10 @@ namespace Zad2
         private Color GetObjectColorAtPos(int x, int y)
         {
             if (objectColorSolidRadioButton.Checked == true) return objectColor;
-            else return objectColor;
+            else
+            {
+                return Color.FromArgb(sourceImageBits[x + y * backgroundBitmapWidth]);
+            }
         }
 
         private void FillLightColorPickerBox()
@@ -151,19 +158,19 @@ namespace Zad2
 
         private void DrawPixel(int x, int y)
         {
-            if (x >= 0 && x < BackgroundBitmapWidth && y >= 0 && y < BackgroundBitmapHeight)
-                Bits[x + y * BackgroundBitmapWidth] = GetARGBColorToFill(x, y);
+            if (x >= 0 && x < backgroundBitmapWidth && y >= 0 && y < backgroundBitmapHeight)
+                backgroundBits[x + y * backgroundBitmapWidth] = GetARGBColorToFill(x, y);
         }
 
         private void CreateBackgroundBitmap()
         {
-            Bits = new Int32[BackgroundBitmapHeight * BackgroundBitmapWidth];
-            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-            backgroundBitmap = new Bitmap(BackgroundBitmapWidth, 
-                                          BackgroundBitmapHeight, 
-                                          BackgroundBitmapWidth * 4, 
+            backgroundBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
+            backgroundBitsHandle = GCHandle.Alloc(backgroundBits, GCHandleType.Pinned);
+            backgroundBitmap = new Bitmap(backgroundBitmapWidth, 
+                                          backgroundBitmapHeight, 
+                                          backgroundBitmapWidth * 4, 
                                           System.Drawing.Imaging.PixelFormat.Format32bppPArgb, 
-                                          BitsHandle.AddrOfPinnedObject());
+                                          backgroundBitsHandle.AddrOfPinnedObject());
         }
 
         private void ksValueSlider_ValueChanged(object sender, EventArgs e)
@@ -192,6 +199,7 @@ namespace Zad2
                 lightColor = dialog.Color;
             }
             FillLightColorPickerBox();
+            RedrawBackgroundBitmap();
         }
 
         private void objectColorPictureBox_Click(object sender, EventArgs e)
@@ -202,6 +210,7 @@ namespace Zad2
                 objectColor = dialog.Color;
             }
             FillObjectColorPickerBox();
+            RedrawBackgroundBitmap();
         }
 
         private void widthSegmentsInput_ValueChanged(object sender, EventArgs e)
@@ -224,11 +233,11 @@ namespace Zad2
                                     ref vertices,
                                     widthSegments,
                                     heightSegments,
-                                    BackgroundBitmapWidth / 2);
+                                    backgroundBitmapWidth / 2);
             foreach (Point vertex in vertices)
             {
-                vertex.x += BackgroundBitmapWidth / 2;
-                vertex.y += BackgroundBitmapHeight / 2;
+                vertex.x += backgroundBitmapWidth / 2;
+                vertex.y += backgroundBitmapHeight / 2;
             }
             RedrawBackgroundBitmap();
         }
@@ -258,7 +267,6 @@ namespace Zad2
         private void UpdateLightVector(Object myObject, EventArgs myEventArgs)
         {
             double MAX = 150;
-            this.Text = tickCounter.ToString();
             if (tickCounter == MAX) tickCounter = 0;
             double _x, _y, _z;
             _z = 0.2;
@@ -270,6 +278,40 @@ namespace Zad2
 
             RedrawBackgroundBitmapParallel();
             tickCounter++;
+        }
+
+        private void objectColorSolidRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (objectColorTextureRadioButton.Checked == true)
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+                dialog.InitialDirectory = @"C:\";
+                dialog.Title = "Please select an image file.";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Image sourceImage = new Bitmap(dialog.FileName);
+                   
+                    
+                    sourceImageBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
+                    sourceImageBitsHandle = GCHandle.Alloc(sourceImageBits, GCHandleType.Pinned);
+                    sourceImageBitmap = new Bitmap(backgroundBitmapWidth,
+                                                  backgroundBitmapHeight,
+                                                  backgroundBitmapWidth * 4,
+                                                  System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
+                                                  sourceImageBitsHandle.AddrOfPinnedObject());
+
+                    Graphics graphics = Graphics.FromImage(sourceImageBitmap);
+                    graphics.DrawImage(sourceImage, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+                }
+                else
+                {
+                    objectColorTextureRadioButton.Checked = false;
+                    objectColorSolidRadioButton.Checked = true;
+                }
+            }
+            RedrawBackgroundBitmap();
         }
     }
 }

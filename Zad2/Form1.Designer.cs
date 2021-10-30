@@ -332,7 +332,6 @@ namespace Zad2
             // objectColorTextureRadioButton
             // 
             this.objectColorTextureRadioButton.AutoSize = true;
-            this.objectColorTextureRadioButton.Enabled = false;
             this.objectColorTextureRadioButton.Location = new System.Drawing.Point(6, 46);
             this.objectColorTextureRadioButton.Name = "objectColorTextureRadioButton";
             this.objectColorTextureRadioButton.Size = new System.Drawing.Size(76, 24);
@@ -351,6 +350,7 @@ namespace Zad2
             this.objectColorSolidRadioButton.TabStop = true;
             this.objectColorSolidRadioButton.Text = "solid color";
             this.objectColorSolidRadioButton.UseVisualStyleBackColor = true;
+            this.objectColorSolidRadioButton.CheckedChanged += new System.EventHandler(this.objectColorSolidRadioButton_CheckedChanged);
             // 
             // label8
             // 
