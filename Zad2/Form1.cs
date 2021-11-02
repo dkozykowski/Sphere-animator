@@ -467,7 +467,7 @@ namespace Zad2
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            StopTimer();
+            if (animatedLightVersorButton.Checked) return;
             Point mousePos = new Point(e.X, e.Y, 0);
             foreach(Triangle triangle in triangles)
             {
@@ -500,7 +500,6 @@ namespace Zad2
             }
             else return;
             RedrawBackgroundBitmap(useParallelism: false);
-            ContinueTimer();
         }
     }
 }
