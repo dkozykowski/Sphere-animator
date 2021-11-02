@@ -90,6 +90,9 @@ namespace Zad2
             this.pictureBox1.Size = new System.Drawing.Size(650, 650);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
             // groupBox1
             // 
@@ -140,7 +143,7 @@ namespace Zad2
             this.useNormalMapCheckbox.TabIndex = 31;
             this.useNormalMapCheckbox.Text = ":Use normal map";
             this.useNormalMapCheckbox.UseVisualStyleBackColor = true;
-            this.useNormalMapCheckbox.CheckedChanged += new System.EventHandler(this.useNormalMapCheckbox_CheckedChanged);
+            this.useNormalMapCheckbox.CheckedChanged += new System.EventHandler(this.UseNormalMapCheckbox_CheckedChanged);
             // 
             // loadNormalMappingButton
             // 
@@ -150,7 +153,7 @@ namespace Zad2
             this.loadNormalMappingButton.TabIndex = 30;
             this.loadNormalMappingButton.Text = "Load map";
             this.loadNormalMappingButton.UseVisualStyleBackColor = true;
-            this.loadNormalMappingButton.Click += new System.EventHandler(this.loadNormalMappingButton_Click);
+            this.loadNormalMappingButton.Click += new System.EventHandler(this.LoadNormalMappingButton_Click);
             // 
             // label18
             // 
@@ -177,7 +180,7 @@ namespace Zad2
             this.lightColorPictureBox.Size = new System.Drawing.Size(46, 32);
             this.lightColorPictureBox.TabIndex = 9;
             this.lightColorPictureBox.TabStop = false;
-            this.lightColorPictureBox.Click += new System.EventHandler(this.colorPictureBox_Click);
+            this.lightColorPictureBox.Click += new System.EventHandler(this.ColorPictureBox_Click);
             // 
             // kValueSlider
             // 
@@ -189,7 +192,7 @@ namespace Zad2
             this.kValueSlider.TabIndex = 27;
             this.kValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.kValueSlider.Value = 100;
-            this.kValueSlider.ValueChanged += new System.EventHandler(this.kValueSlider_ValueChanged);
+            this.kValueSlider.ValueChanged += new System.EventHandler(this.KValueSlider_ValueChanged);
             // 
             // label13
             // 
@@ -221,7 +224,7 @@ namespace Zad2
             0,
             0,
             0});
-            this.heightSegmentsInput.ValueChanged += new System.EventHandler(this.heightSegmentsInput_ValueChanged);
+            this.heightSegmentsInput.ValueChanged += new System.EventHandler(this.HeightSegmentsInput_ValueChanged);
             // 
             // widthSegmentsInput
             // 
@@ -244,7 +247,7 @@ namespace Zad2
             0,
             0,
             0});
-            this.widthSegmentsInput.ValueChanged += new System.EventHandler(this.widthSegmentsInput_ValueChanged);
+            this.widthSegmentsInput.ValueChanged += new System.EventHandler(this.WidthSegmentsInput_ValueChanged);
             // 
             // label16
             // 
@@ -294,7 +297,7 @@ namespace Zad2
             this.exactFillColorButton.TabStop = true;
             this.exactFillColorButton.Text = "exact";
             this.exactFillColorButton.UseVisualStyleBackColor = true;
-            this.exactFillColorButton.CheckedChanged += new System.EventHandler(this.exactFillColorButton_CheckedChanged);
+            this.exactFillColorButton.CheckedChanged += new System.EventHandler(this.ExactFillColorButton_CheckedChanged);
             // 
             // label14
             // 
@@ -335,7 +338,7 @@ namespace Zad2
             this.constLightVersorButton.TabStop = true;
             this.constLightVersorButton.Text = "constant   ([0, 0, 1])";
             this.constLightVersorButton.UseVisualStyleBackColor = true;
-            this.constLightVersorButton.CheckedChanged += new System.EventHandler(this.constLightVersorButton_CheckedChanged);
+            this.constLightVersorButton.CheckedChanged += new System.EventHandler(this.ConstLightVersorButton_CheckedChanged);
             // 
             // label12
             // 
@@ -374,7 +377,7 @@ namespace Zad2
             this.mValueSlider.TabIndex = 13;
             this.mValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.mValueSlider.Value = 5;
-            this.mValueSlider.ValueChanged += new System.EventHandler(this.mValueSlider_ValueChanged);
+            this.mValueSlider.ValueChanged += new System.EventHandler(this.MValueSlider_ValueChanged);
             // 
             // label9
             // 
@@ -402,7 +405,7 @@ namespace Zad2
             this.objectColorPictureBox.Size = new System.Drawing.Size(46, 32);
             this.objectColorPictureBox.TabIndex = 12;
             this.objectColorPictureBox.TabStop = false;
-            this.objectColorPictureBox.Click += new System.EventHandler(this.objectColorPictureBox_Click);
+            this.objectColorPictureBox.Click += new System.EventHandler(this.ObjectColorPictureBox_Click);
             // 
             // objectColorTextureRadioButton
             // 
@@ -425,7 +428,7 @@ namespace Zad2
             this.objectColorSolidRadioButton.TabStop = true;
             this.objectColorSolidRadioButton.Text = "solid color";
             this.objectColorSolidRadioButton.UseVisualStyleBackColor = true;
-            this.objectColorSolidRadioButton.CheckedChanged += new System.EventHandler(this.objectColorSolidRadioButton_CheckedChanged);
+            this.objectColorSolidRadioButton.CheckedChanged += new System.EventHandler(this.ObjectColorSolidRadioButton_CheckedChanged);
             // 
             // label8
             // 
@@ -472,7 +475,7 @@ namespace Zad2
             this.kdValueSlider.TabIndex = 5;
             this.kdValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.kdValueSlider.Value = 700;
-            this.kdValueSlider.ValueChanged += new System.EventHandler(this.kdValueSlider_ValueChanged);
+            this.kdValueSlider.ValueChanged += new System.EventHandler(this.KdValueSlider_ValueChanged);
             // 
             // label4
             // 
@@ -519,7 +522,7 @@ namespace Zad2
             this.ksValueSlider.TabIndex = 0;
             this.ksValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ksValueSlider.Value = 300;
-            this.ksValueSlider.ValueChanged += new System.EventHandler(this.ksValueSlider_ValueChanged);
+            this.ksValueSlider.ValueChanged += new System.EventHandler(this.KsValueSlider_ValueChanged);
             // 
             // Form1
             // 

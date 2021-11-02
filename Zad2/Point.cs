@@ -16,11 +16,11 @@ namespace Zad2
             this.y = y;
             this.z = z;
         }
-        public Point(Color color)
+        public Point((int R, int G, int B) input)
         {
-            x = ((double)color.R - 127) / 128;
-            y = ((double)color.G - 127) / 128;
-            z = ((double)color.B - 127) / 128;
+            x = ((double)input.R - 127) / 128;
+            y = ((double)input.G - 127) / 128;
+            z = ((double)input.B - 127) / 128;
         }
         public Point(double x, double y, double z)
         {
@@ -38,6 +38,10 @@ namespace Zad2
             x /= len;
             y /= len;
             z /= len;
+        }
+        public double Len2D()
+        {
+            return x * x + y * y;
         }
 
         public static implicit operator System.Drawing.Point(Point p) => new System.Drawing.Point((int)Math.Round(p.x, 0), (int)Math.Round(p.y, 0));

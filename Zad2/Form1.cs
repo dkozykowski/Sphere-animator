@@ -25,8 +25,8 @@ namespace Zad2
         private int heightSegments;
         private int widthSegments;
 
-        private Color lightColor;
-        private Color objectColor;
+        private (int R, int G, int B) lightColor;
+        private (int R, int G, int B) objectColor;
 
         private List<Triangle> triangles;
         private List<Point> vertices;
@@ -45,16 +45,27 @@ namespace Zad2
         private Int32[] normalMapBits;
         private GCHandle normalMapBitsHandle;
 
-        private Timer timer = null;
+        private Timer timer;
         private int tickCounter;
+
+        private bool isSomePointBeeingMoved;
+        private Point pointToMove;
+
+        bool useSolidColor;
+        bool useNormalMap;
 
         public Form1()
         {
-            lightColor = Color.FromArgb(255, 255, 255);
-            objectColor = Color.BlanchedAlmond;
+            lightColor = (255, 255, 255);
+            objectColor = (255, 235, 205);
             backgroundBitmapHeight = backgroundBitmapWidth = 650;
             lightVersor = new Point(0, 0, 1);
             VVector = new Point(0, 0, 1);
+            pointToMove = null;
+            isSomePointBeeingMoved = false;
+            timer = null;
+            useSolidColor = true;
+            useNormalMap = false;
 
             InitializeComponent();
 
@@ -75,7 +86,7 @@ namespace Zad2
         {
             Point normalVersor = GetNormalVersor(x, y);
 
-            Color objectColor = GetObjectColorAtPos(x, y);
+            (int R, int G, int B) objectColor = GetObjectColorAtPos(x, y);
             double R, G, B;
             double CosNL = Cos(normalVersor, lightVersor);
             Point RVector = 2 * CosNL * normalVersor - lightVersor;
@@ -90,7 +101,21 @@ namespace Zad2
             G = Math.Min(1, Math.Max(0, G));
             B = Math.Min(1, Math.Max(0, B));
 
-            return Color.FromArgb((int)Math.Round(R * 255, 0), (int)Math.Round(G * 255, 0), (int)Math.Round(B * 255, 0)).ToArgb();
+            return RGBToInt((int)Math.Round(R * 255, 0), (int)Math.Round(G * 255, 0), (int)Math.Round(B * 255, 0));
+        }
+
+        private static int RGBToInt(int R, int G, int B)
+        {
+            return (255 << 24) + (R << 16) + (G << 8) + B;
+        }
+
+        private static (int, int, int) IntToRGB(int color)
+        {
+            int R, G, B;
+            R = (color & 0xff0000) >> 16;
+            G = (color & 0xff00) >> 8;
+            B = (color & 0xff);
+            return (R, G, B);
         }
 
         private int GetARGBInterpolatedColorToFill(Triangle triangle)
@@ -104,14 +129,15 @@ namespace Zad2
                 int _y = (int)Math.Round(triangle.points[i].y, 0);
                 _y = Math.Max(0, Math.Min(_y, backgroundBitmapWidth - 1));
 
-                Color color = Color.FromArgb(GetARGBColorToFill(_x, _y));
-                R += color.R;
-                G += color.G;
-                B += color.B;
+                int _R, _G, _B;
+                (_R, _G, _B) = IntToRGB(GetARGBColorToFill(_x, _y));
+                R += _R;
+                G += _G;
+                B += _B;
             }
 
 
-            return Color.FromArgb(R / 3, G / 3, B / 3).ToArgb();
+            return RGBToInt(R / 3, G / 3, B / 3);
         }
 
         private Point GetNormalVersor(int x, int y)
@@ -124,9 +150,9 @@ namespace Zad2
             Point normalVersor = new Point(_x, _y, _z);
             normalVersor.Normalise();
 
-            if (useNormalMapCheckbox.Checked)
+            if (useNormalMap)
             {
-                Point textureVersor = new Point(Color.FromArgb(normalMapBits[x + y * backgroundBitmapWidth]));
+                Point textureVersor = new Point(IntToRGB(normalMapBits[x + y * backgroundBitmapWidth]));
                 textureVersor.Normalise();
                 normalVersor = K * normalVersor - (K - 1) * textureVersor;
             }
@@ -138,12 +164,12 @@ namespace Zad2
             return a.x * b.x + a.y * b.y + a.z * b.z;
         }
 
-        private Color GetObjectColorAtPos(int x, int y)
+        private (int, int, int) GetObjectColorAtPos(int x, int y)
         {
-            if (objectColorSolidRadioButton.Checked == true) return objectColor;
+            if (useSolidColor) return objectColor;
             else
             {
-                return Color.FromArgb(sourceImageBits[x + y * backgroundBitmapWidth]);
+                return IntToRGB(sourceImageBits[x + y * backgroundBitmapWidth]);
             }
         }
 
@@ -151,7 +177,7 @@ namespace Zad2
         {
             Bitmap bitmap = new Bitmap(46, 32);
             Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.Clear(lightColor);
+            graphics.Clear(Color.FromArgb(lightColor.R, lightColor.G, lightColor.B));
             lightColorPictureBox.Image = bitmap;
         }
 
@@ -159,26 +185,41 @@ namespace Zad2
         {
             Bitmap bitmap = new Bitmap(46, 32);
             Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.Clear(objectColor);
+            graphics.Clear(Color.FromArgb(objectColor.R, objectColor.G, objectColor.B));
             objectColorPictureBox.Image = bitmap;
         }
 
-        private void RedrawBackgroundBitmap()
+        private void RedrawBackgroundBitmap(bool useParallelism = true)
         {
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
             graphics.Clear(Color.White);
 
-            Parallel.ForEach(triangles, triangle =>
-            //foreach (Triangle triangle in triangles)
+            if (useParallelism)
             {
-                if (exactFillColorButton.Checked)
-                    PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
-                else
+                Parallel.ForEach(triangles, triangle =>
                 {
-                    int color = GetARGBInterpolatedColorToFill(triangle);
-                    PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                    if (exactFillColorButton.Checked)
+                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                    else
+                    {
+                        int color = GetARGBInterpolatedColorToFill(triangle);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                    }
+                });
+            }
+            else
+            {
+                foreach (Triangle triangle in triangles)
+                {
+                    if (exactFillColorButton.Checked)
+                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                    else
+                    {
+                        int color = GetARGBInterpolatedColorToFill(triangle);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                    }
                 }
-            });
+            }
 
             foreach (Triangle triangle in triangles)
             {
@@ -208,57 +249,61 @@ namespace Zad2
                                           backgroundBitsHandle.AddrOfPinnedObject());
         }
 
-        private void ksValueSlider_ValueChanged(object sender, EventArgs e)
+        private void KsValueSlider_ValueChanged(object sender, EventArgs e)
         {
             ks = (double)ksValueSlider.Value / 1000;
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
 
-        private void kdValueSlider_ValueChanged(object sender, EventArgs e)
+        private void KdValueSlider_ValueChanged(object sender, EventArgs e)
         {
             kd = (double)kdValueSlider.Value / 1000;
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
-        private void mValueSlider_ValueChanged(object sender, EventArgs e)
+        private void MValueSlider_ValueChanged(object sender, EventArgs e)
         {
             M = mValueSlider.Value;
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
 
-        private void colorPictureBox_Click(object sender, EventArgs e)
+        private void KValueSlider_ValueChanged(object sender, EventArgs e)
+        {
+            K = (double)kValueSlider.Value / 100;
+            RedrawBackgroundBitmap(useParallelism: false);
+        }
+
+        private void ColorPictureBox_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                lightColor = dialog.Color;
+                lightColor = (dialog.Color.R, dialog.Color.G, dialog.Color.B);
             }
             FillLightColorPickerBox();
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
 
-        private void objectColorPictureBox_Click(object sender, EventArgs e)
+        private void ObjectColorPictureBox_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                objectColor = dialog.Color;
+                objectColor = (dialog.Color.R, dialog.Color.G, dialog.Color.B);
             }
             FillObjectColorPickerBox();
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
 
-        private void widthSegmentsInput_ValueChanged(object sender, EventArgs e)
+        private void WidthSegmentsInput_ValueChanged(object sender, EventArgs e)
         {
             widthSegments = (int)widthSegmentsInput.Value;
             RedoMesh();
-            RedrawBackgroundBitmap();
         }
 
-        private void heightSegmentsInput_ValueChanged(object sender, EventArgs e)
+        private void HeightSegmentsInput_ValueChanged(object sender, EventArgs e)
         {
             heightSegments = (int)heightSegmentsInput.Value;
             RedoMesh();
-            RedrawBackgroundBitmap();
         }
 
         private void RedoMesh()
@@ -276,7 +321,7 @@ namespace Zad2
             RedrawBackgroundBitmap();
         }
 
-        private void constLightVersorButton_CheckedChanged(object sender, EventArgs e)
+        private void ConstLightVersorButton_CheckedChanged(object sender, EventArgs e)
         {
             if (constLightVersorButton.Checked == true)
             {
@@ -286,7 +331,7 @@ namespace Zad2
                     timer.Dispose();
                 }
                 lightVersor = new Point(0, 0, 1);
-                RedrawBackgroundBitmap();
+                RedrawBackgroundBitmap(useParallelism: false);
             }
             else
             {
@@ -314,7 +359,7 @@ namespace Zad2
             tickCounter++;
         }
 
-        private void objectColorSolidRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void ObjectColorSolidRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             StopTimer();
             if (objectColorTextureRadioButton.Checked == true)
@@ -327,8 +372,8 @@ namespace Zad2
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Image sourceImage = new Bitmap(dialog.FileName);
-                   
-                    
+
+
                     sourceImageBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
                     sourceImageBitsHandle = GCHandle.Alloc(sourceImageBits, GCHandleType.Pinned);
                     sourceImageBitmap = new Bitmap(backgroundBitmapWidth,
@@ -339,20 +384,48 @@ namespace Zad2
 
                     Graphics graphics = Graphics.FromImage(sourceImageBitmap);
                     graphics.DrawImage(sourceImage, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+                    useSolidColor = false;
                 }
                 else
                 {
                     objectColorTextureRadioButton.Checked = false;
                     objectColorSolidRadioButton.Checked = true;
+                    useSolidColor = true;
                 }
             }
+            else useSolidColor = true;
             ContinueTimer();
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
         }
 
-        private void loadNormalMappingButton_Click(object sender, EventArgs e)
+        private void LoadNormalMappingButton_Click(object sender, EventArgs e)
         {
             StopTimer();
+            WasNormalMappingChoosen();
+            ContinueTimer();
+            RedrawBackgroundBitmap(useParallelism: false);
+        }
+        private void UseNormalMapCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (useNormalMapCheckbox.Checked)
+            {
+                if (normalMapBitmap == null)
+                {
+                    if (!WasNormalMappingChoosen())
+                    {
+                        useNormalMapCheckbox.Checked = false;
+                        useNormalMap = false;
+                    }
+                    else useNormalMap = true;
+                }
+                else useNormalMap = true;
+            }
+            else useNormalMap = false;
+            RedrawBackgroundBitmap(useParallelism: false);
+        }
+
+        private bool WasNormalMappingChoosen()
+        {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
             dialog.InitialDirectory = Path.GetFullPath("..\\..\\..\\normal_maps");
@@ -373,21 +446,9 @@ namespace Zad2
 
                 Graphics graphics = Graphics.FromImage(normalMapBitmap);
                 graphics.DrawImage(normalMap, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+                return true;
             }
-            ContinueTimer();
-            RedrawBackgroundBitmap();
-        }
-
-        private void kValueSlider_ValueChanged(object sender, EventArgs e)
-        {
-            K = (double)kValueSlider.Value / 100;
-            RedrawBackgroundBitmap();
-        }
-
-        private void useNormalMapCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (useNormalMapCheckbox.Checked && normalMapBitmap == null) loadNormalMappingButton_Click(sender, e);
-            RedrawBackgroundBitmap();
+            else return false;
         }
 
         private void StopTimer()
@@ -399,9 +460,47 @@ namespace Zad2
             if (timer != null) timer.Start();
         }
 
-        private void exactFillColorButton_CheckedChanged(object sender, EventArgs e)
+        private void ExactFillColorButton_CheckedChanged(object sender, EventArgs e)
         {
-            RedrawBackgroundBitmap();
+            RedrawBackgroundBitmap(useParallelism: false);
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            StopTimer();
+            Point mousePos = new Point(e.X, e.Y, 0);
+            foreach(Triangle triangle in triangles)
+            {
+                foreach(Point point in triangle.points)
+                {
+                    if ((point - mousePos).Len2D() < 25)
+                    {
+                        pointToMove = point;
+                        isSomePointBeeingMoved = true;
+                        return;
+                    }
+                }
+            }
+        }
+
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isSomePointBeeingMoved || pointToMove == null) return;
+            pointToMove.x = e.X;
+            pointToMove.y = e.Y;
+            
+        }
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isSomePointBeeingMoved)
+            {
+                isSomePointBeeingMoved = false;
+                pointToMove = null;
+            }
+            else return;
+            RedrawBackgroundBitmap(useParallelism: false);
+            ContinueTimer();
         }
     }
 }
