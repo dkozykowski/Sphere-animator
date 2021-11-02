@@ -28,7 +28,7 @@ namespace Zad2
             this.y = y;
             this.z = z;
         }
-        public bool IsSame(Point b)
+        public bool Equals(Point b)
         {
             return (x == b.x && y == b.y);
         }

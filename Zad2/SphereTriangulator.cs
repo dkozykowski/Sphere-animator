@@ -20,6 +20,17 @@ namespace Zad2
             points.Add(c);
             points.Sort((a, b) => a.y == b.y ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y)); // sort ascending relative to Point.y 
         }
+        public bool IsValid()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int o = i + 1; o < 3; o++)
+                {
+                    if (points[i].Equals(points[o])) return false;
+                }
+            }
+            return true;
+        }
         public void Draw(Graphics graphics)
         {
             Pen pen = new Pen(Brushes.Black);
@@ -77,6 +88,7 @@ namespace Zad2
         private static void GenerateTriangles(ref List<Triangle> triangles, int heightSegments, int widthSegments, List<List<Point>> _vertices)
         {
             triangles = new List<Triangle>();
+            Triangle triangle;
             for (int y = 0; y < heightSegments; y++)
             {
                 for (int x = 0; x < widthSegments; x++)
@@ -86,14 +98,15 @@ namespace Zad2
                     Point vertexC = _vertices[y + 1][x];
                     Point vertexD = _vertices[y + 1][x + 1];
 
-                    triangles.Add(new Triangle(vertexA, vertexB, vertexD));
+                    triangle = new Triangle(vertexA, vertexB, vertexD);
+                    if (triangle.IsValid())
+                        triangles.Add(triangle);
 
                     if (y != heightSegments - 1 || thetaStart + thetaLength < Math.PI)
                     {
-                        if (!vertexB.IsSame(vertexC) && !vertexB.IsSame(vertexD) && !vertexD.IsSame(vertexB))
-                        {
-                            triangles.Add(new Triangle(vertexB, vertexC, vertexD));
-                        }
+                        triangle = new Triangle(vertexB, vertexC, vertexD);
+                        if (triangle.IsValid())
+                            triangles.Add(triangle);
                     }
                         
                 }

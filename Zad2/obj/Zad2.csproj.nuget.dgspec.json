@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\studia\\sem5\\grafika_komputerowa\\Zad2\\Zad2\\Zad2.csproj": {}
+    "C:\\Users\\dkozy\\Desktop\\grafika_komp_proj_2\\Zad2\\Zad2.csproj": {}
   },
   "projects": {
-    "D:\\studia\\sem5\\grafika_komputerowa\\Zad2\\Zad2\\Zad2.csproj": {
+    "C:\\Users\\dkozy\\Desktop\\grafika_komp_proj_2\\Zad2\\Zad2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\studia\\sem5\\grafika_komputerowa\\Zad2\\Zad2\\Zad2.csproj",
+        "projectUniqueName": "C:\\Users\\dkozy\\Desktop\\grafika_komp_proj_2\\Zad2\\Zad2.csproj",
         "projectName": "Zad2",
-        "projectPath": "D:\\studia\\sem5\\grafika_komputerowa\\Zad2\\Zad2\\Zad2.csproj",
+        "projectPath": "C:\\Users\\dkozy\\Desktop\\grafika_komp_proj_2\\Zad2\\Zad2.csproj",
         "packagesPath": "C:\\Users\\dkozy\\.nuget\\packages\\",
-        "outputPath": "D:\\studia\\sem5\\grafika_komputerowa\\Zad2\\Zad2\\obj\\",
+        "outputPath": "C:\\Users\\dkozy\\Desktop\\grafika_komp_proj_2\\Zad2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dkozy\\AppData\\Roaming\\NuGet\\NuGet.Config",
