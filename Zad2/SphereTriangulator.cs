@@ -42,9 +42,9 @@ namespace Zad2
     public static class SphereTriangulator
     {
         private static readonly double phiStart = 0;
-        private static readonly double phiLength = Math.PI * 2;
+        private static readonly double phiLength = Math.PI;
         private static readonly double thetaStart = 0;
-        private static readonly double thetaLength = Math.PI / 2;
+        private static readonly double thetaLength = Math.PI;
         public static void CreateMesh(ref List<Triangle> triangles, 
                             ref List<Point> vertices, 
                             int heightSegments, 
@@ -78,8 +78,8 @@ namespace Zad2
                 {
                     double u = (double)x / (double)widthSegments;
                     double px = (double)(-radius * Math.Cos(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
-                    double pz = (double)(radius * Math.Cos(thetaStart + v * thetaLength));
-                    double py = (double)(radius * Math.Sin(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
+                    double py = (double)(radius * Math.Cos(thetaStart + v * thetaLength));
+                    double pz = (double)(radius * Math.Sin(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
                     verticesRow.Add(new Point(px, py, pz));
                 }
                 _vertices.Add(verticesRow);
