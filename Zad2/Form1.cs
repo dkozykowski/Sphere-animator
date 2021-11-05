@@ -457,7 +457,7 @@ namespace Zad2
         }
         private void ContinueTimer()
         {
-            if (timer != null) timer.Start();
+            if (timer != null && animatedLightVersorButton.Checked) timer.Start();
         }
 
         private void ExactFillColorButton_CheckedChanged(object sender, EventArgs e)
