@@ -11,9 +11,9 @@ namespace Zad2
         class AETNode
         {
             public int id;
-            public double y, x;
-            public double m;
-            public AETNode(int id, double x, double y, double m)
+            public float y, x;
+            public float m;
+            public AETNode(int id, float x, float y, float m)
             {
                 this.id = id;
                 this.x = x;
@@ -43,8 +43,8 @@ namespace Zad2
 
                     if (points[prevIndex].y >= points[currIndex].y)
                     {
-                        double dx = points[currIndex].x - points[prevIndex].x;
-                        double dy = points[currIndex].y - points[prevIndex].y;
+                        float dx = points[currIndex].x - points[prevIndex].x;
+                        float dy = points[currIndex].y - points[prevIndex].y;
 
                         if (points[prevIndex].y != points[currIndex].y)
                             AET.Add(new AETNode(prevIndex, points[currIndex].x, points[prevIndex].y, dx / dy));
@@ -56,8 +56,8 @@ namespace Zad2
 
                     if (points[nextIndex].y >= points[currIndex].y)
                     {
-                        double dx = points[currIndex].x - points[nextIndex].x;
-                        double dy = points[currIndex].y - points[nextIndex].y;
+                        float dx = points[currIndex].x - points[nextIndex].x;
+                        float dy = points[currIndex].y - points[nextIndex].y;
 
                         if (points[nextIndex].y != points[currIndex].y)
                             AET.Add(new AETNode(currIndex, points[currIndex].x, points[nextIndex].y, dx / dy));

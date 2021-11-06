@@ -41,10 +41,10 @@ namespace Zad2
     }
     public static class SphereTriangulator
     {
-        private static readonly double phiStart = 0;
-        private static readonly double phiLength = Math.PI;
-        private static readonly double thetaStart = 0;
-        private static readonly double thetaLength = Math.PI;
+        private static readonly float phiStart = 0;
+        private static readonly float phiLength = (float)Math.PI;
+        private static readonly float thetaStart = 0;
+        private static readonly float thetaLength = (float)Math.PI;
         public static void CreateMesh(ref List<Triangle> triangles, 
                             ref List<Point> vertices, 
                             int heightSegments, 
@@ -73,13 +73,13 @@ namespace Zad2
             for (int y = 0; y <= heightSegments; y++)
             {
                 List<Point> verticesRow = new List<Point>();
-                double v = (double)y / (double)heightSegments;
+                float v = (float)y / (float)heightSegments;
                 for (int x = 0; x <= widthSegments; x++)
                 {
-                    double u = (double)x / (double)widthSegments;
-                    double px = (double)(-radius * Math.Cos(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
-                    double py = (double)(radius * Math.Cos(thetaStart + v * thetaLength));
-                    double pz = (double)(radius * Math.Sin(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
+                    float u = (float)x / (float)widthSegments;
+                    float px = (float)(-radius * Math.Cos(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
+                    float py = (float)(radius * Math.Cos(thetaStart + v * thetaLength));
+                    float pz = (float)(radius * Math.Sin(phiStart + u * phiLength) * Math.Sin(thetaStart + v * thetaLength));
                     verticesRow.Add(new Point(px, py, pz));
                 }
                 _vertices.Add(verticesRow);

@@ -14,10 +14,10 @@ namespace Zad2
 {
     public partial class Form1 : Form
     {
-        private double kd;
-        private double ks;
+        private float kd;
+        private float ks;
         private int M;
-        private double K;
+        private float K;
 
         private Point lightVersor;
         private Point VVector;
@@ -71,9 +71,9 @@ namespace Zad2
 
             heightSegments = (int)heightSegmentsInput.Value;
             widthSegments = (int)widthSegmentsInput.Value;
-            kd = (double)kdValueSlider.Value / 1000;
-            ks = (double)ksValueSlider.Value / 1000;
-            K = (double)kValueSlider.Value / 100;
+            kd = (float)kdValueSlider.Value / 1000;
+            ks = (float)ksValueSlider.Value / 1000;
+            K = (float)kValueSlider.Value / 100;
             M = mValueSlider.Value;
 
             CreateBackgroundBitmap();
@@ -82,12 +82,12 @@ namespace Zad2
             FillObjectColorPickerBox();
         }
 
-        private double Pow(double a, int b)
+        private float Pow(float a, int b)
         {
             if (b == 0) return 1;
             else if ((b & 1) == 0)
             {
-                double c = Pow(a, b / 2);
+                float c = Pow(a, b / 2);
                 return c * c;
             }
             else return a * Pow(a, b - 1);
@@ -98,11 +98,11 @@ namespace Zad2
             Point normalVersor = GetNormalVersor(x, y);
 
             (int R, int G, int B) objectColor = GetObjectColorAtPos(x, y);
-            double R, G, B;
-            double CosNL = Cos(normalVersor, lightVersor);
+            float R, G, B;
+            float CosNL = Cos(normalVersor, lightVersor);
             Point RVector = 2 * CosNL * normalVersor - lightVersor;
 
-            double VRcos = Pow(Math.Max(0, Cos(VVector, RVector)), M);
+            float VRcos = Pow(Math.Max(0, Cos(VVector, RVector)), M);
 
             R = CosNL * kd * lightColor.R / 255 * objectColor.R / 255 + VRcos * ks * lightColor.R / 255 * objectColor.R / 255;
             G = CosNL * kd * lightColor.G / 255 * objectColor.G / 255 + VRcos * ks * lightColor.G / 255 * objectColor.G / 255;
@@ -153,11 +153,11 @@ namespace Zad2
 
         private Point GetNormalVersor(int x, int y)
         {
-            double _x, _y, _z, _radius;
+            float _x, _y, _z, _radius;
             _radius = backgroundBitmapWidth / 2 + 5;
             _x = x - backgroundBitmapWidth / 2;
             _y = y - backgroundBitmapHeight / 2;
-            _z = Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
+            _z = (float)Math.Sqrt(_radius * _radius - _x * _x - _y * _y);
             Point normalVersor = new Point(_x, _y, _z);
             normalVersor.Normalise();
 
@@ -170,7 +170,7 @@ namespace Zad2
             return normalVersor;
         }
 
-        private double Cos(Point a, Point b)
+        private float Cos(Point a, Point b)
         {
             return a.x * b.x + a.y * b.y + a.z * b.z;
         }
@@ -202,7 +202,6 @@ namespace Zad2
 
         private void RedrawBackgroundBitmap(bool useParallelism = true)
         {
-            useParallelism = false; // comment this line in order to use parallel computing - requires good CPU
 
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
             graphics.Clear(Color.White);
@@ -264,13 +263,13 @@ namespace Zad2
 
         private void KsValueSlider_ValueChanged(object sender, EventArgs e)
         {
-            ks = (double)ksValueSlider.Value / 1000;
+            ks = (float)ksValueSlider.Value / 1000;
             RedrawBackgroundBitmap(useParallelism: false);
         }
 
         private void KdValueSlider_ValueChanged(object sender, EventArgs e)
         {
-            kd = (double)kdValueSlider.Value / 1000;
+            kd = (float)kdValueSlider.Value / 1000;
             RedrawBackgroundBitmap(useParallelism: false);
         }
         private void MValueSlider_ValueChanged(object sender, EventArgs e)
@@ -281,7 +280,7 @@ namespace Zad2
 
         private void KValueSlider_ValueChanged(object sender, EventArgs e)
         {
-            K = (double)kValueSlider.Value / 100;
+            K = (float)kValueSlider.Value / 100;
             RedrawBackgroundBitmap(useParallelism: false);
         }
 
@@ -350,7 +349,7 @@ namespace Zad2
             {
                 tickCounter = 0;
                 timer = new Timer();
-                timer.Interval = 80;
+                timer.Interval = 20;
                 timer.Tick += new EventHandler(UpdateLightVector);
                 timer.Start();
             }
@@ -358,12 +357,12 @@ namespace Zad2
 
         private void UpdateLightVector(Object myObject, EventArgs myEventArgs)
         {
-            double MAX = 180;
+            float MAX = 240;
             if (tickCounter == MAX) tickCounter = 0;
-            double _x, _y, _z;
-            _z = 0.2;
-            _x = Math.Cos(tickCounter / MAX * Math.PI * 2);
-            _y = Math.Sin(tickCounter / MAX * Math.PI * 2);
+            float _x, _y, _z;
+            _z = 0.2F;
+            _x = (float)Math.Cos(tickCounter / MAX * Math.PI * 2);
+            _y = (float)Math.Sin(tickCounter / MAX * Math.PI * 2);
 
             lightVersor = new Point(_x, _y, _z);
             lightVersor.Normalise();
