@@ -82,6 +82,17 @@ namespace Zad2
             FillObjectColorPickerBox();
         }
 
+        private double Pow(double a, int b)
+        {
+            if (b == 0) return 1;
+            else if ((b & 1) == 0)
+            {
+                double c = Pow(a, b / 2);
+                return c * c;
+            }
+            else return a * Pow(a, b - 1);
+        }
+
         private int GetARGBColorToFill(int x, int y)
         {
             Point normalVersor = GetNormalVersor(x, y);
@@ -91,7 +102,7 @@ namespace Zad2
             double CosNL = Cos(normalVersor, lightVersor);
             Point RVector = 2 * CosNL * normalVersor - lightVersor;
 
-            double VRcos = Math.Pow(Math.Max(0, Cos(VVector, RVector)), M);
+            double VRcos = Pow(Math.Max(0, Cos(VVector, RVector)), M);
 
             R = CosNL * kd * lightColor.R / 255 * objectColor.R / 255 + VRcos * ks * lightColor.R / 255 * objectColor.R / 255;
             G = CosNL * kd * lightColor.G / 255 * objectColor.G / 255 + VRcos * ks * lightColor.G / 255 * objectColor.G / 255;
@@ -191,6 +202,8 @@ namespace Zad2
 
         private void RedrawBackgroundBitmap(bool useParallelism = true)
         {
+            useParallelism = false; // comment this line in order to use parallel computing - requires good CPU
+
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
             graphics.Clear(Color.White);
 
@@ -337,7 +350,7 @@ namespace Zad2
             {
                 tickCounter = 0;
                 timer = new Timer();
-                timer.Interval = 40;
+                timer.Interval = 80;
                 timer.Tick += new EventHandler(UpdateLightVector);
                 timer.Start();
             }
@@ -345,7 +358,7 @@ namespace Zad2
 
         private void UpdateLightVector(Object myObject, EventArgs myEventArgs)
         {
-            double MAX = 120;
+            double MAX = 180;
             if (tickCounter == MAX) tickCounter = 0;
             double _x, _y, _z;
             _z = 0.2;
