@@ -211,11 +211,11 @@ namespace Zad2
                 Parallel.ForEach(triangles, triangle =>
                 {
                     if (exactFillColorButton.Checked)
-                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, DrawPixel);
                     else
                     {
                         int color = GetARGBInterpolatedColorToFill(triangle);
-                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, DrawPixel, color);
                     }
                 });
             }
@@ -224,11 +224,11 @@ namespace Zad2
                 foreach (Triangle triangle in triangles)
                 {
                     if (exactFillColorButton.Checked)
-                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, DrawPixel);
                     else
                     {
                         int color = GetARGBInterpolatedColorToFill(triangle);
-                        PolygonFiller.FillPentagonWithColor(triangle.points, triangle.sortOrder, DrawPixel, color);
+                        PolygonFiller.FillPentagonWithColor(triangle.points, DrawPixel, color);
                     }
                 }
             }
@@ -479,7 +479,6 @@ namespace Zad2
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (animatedLightVersorButton.Checked) return;
             Point mousePos = new Point(e.X, e.Y, 0);
             foreach(Triangle triangle in triangles)
             {

@@ -22,10 +22,13 @@ namespace Zad2
             }
         }
         public static void FillPentagonWithColor(List<Point> points,
-                                                 List<int> sortOrder, 
                                                  Action<int, int, int> FillPixel, 
                                                  int color = -1)
         {
+            List<int> sortOrder = Enumerable.Range(0, points.Count).ToList();
+
+            // sort ascending relative to Point.y
+            sortOrder.Sort((a, b) => points[a].y == points[b].y ? points[a].x.CompareTo(points[b].x) : points[a].y.CompareTo(points[b].y));  
             int n = points.Count;
             int index = 0;
 

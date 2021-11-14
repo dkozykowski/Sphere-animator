@@ -7,38 +7,6 @@ using System.Threading.Tasks;
 
 namespace Zad2
 {
-    public class Triangle
-    {
-        public List<Point> points;
-        public List<int> sortOrder;
-        public Triangle(Point a, Point b, Point c)
-        {
-            points = new List<Point>();
-            sortOrder = new List<int>() { 0, 1, 2 };
-            points.Add(a);
-            points.Add(b);
-            points.Add(c);
-            points.Sort((a, b) => a.y == b.y ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y)); // sort ascending relative to Point.y 
-        }
-        public bool IsValid()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                for (int o = i + 1; o < 3; o++)
-                {
-                    if (points[i].Equals(points[o])) return false;
-                }
-            }
-            return true;
-        }
-        public void Draw(Graphics graphics)
-        {
-            Pen pen = new Pen(Brushes.Black);
-            graphics.DrawLine(pen, points[0], points[1]);
-            graphics.DrawLine(pen, points[0], points[2]);
-            graphics.DrawLine(pen, points[1], points[2]);
-        }
-    }
     public static class SphereTriangulator
     {
         private static readonly float phiStart = 0;
