@@ -53,6 +53,8 @@ namespace Zad2
 
         bool useSolidColor;
         bool useNormalMap;
+        private readonly string DEFAULT_NORMAL_MAP_PATH = "..\\..\\..\\normal_maps\\brick_wall_harsh.png";
+        private readonly string DEFAULT_BACKGROUND_PATH = "..\\..\\..\\background_images\\brick_wall.png";
 
         public Form1()
         {
@@ -63,12 +65,11 @@ namespace Zad2
             VVector = new Point(0, 0, 1);
             pointToMove = null;
             isSomePointBeeingMoved = false;
-            timer = null;
-            useSolidColor = true;
-            useNormalMap = false;
 
             InitializeComponent();
 
+            useSolidColor = objectColorSolidRadioButton.Checked;
+            useNormalMap = useNormalMapCheckbox.Checked;
             heightSegments = (int)heightSegmentsInput.Value;
             widthSegments = (int)widthSegmentsInput.Value;
             kd = (float)kdValueSlider.Value / 1000;
@@ -76,10 +77,21 @@ namespace Zad2
             K = (float)kValueSlider.Value / 100;
             M = mValueSlider.Value;
 
+            LoadNormalMapFromPath(DEFAULT_NORMAL_MAP_PATH);
+            LoadBackgroundFromPath(DEFAULT_BACKGROUND_PATH);
             CreateBackgroundBitmap();
             RedoMesh();
             FillLightColorPickerBox();
             FillObjectColorPickerBox();
+            CreateTimer();
+        }
+
+        private void CreateTimer()
+        {
+            timer = new Timer();
+            timer.Interval = 40;
+            timer.Tick += new EventHandler(UpdateLightVector);
+            timer.Start();
         }
 
         private float Pow(float a, int b)
@@ -373,42 +385,27 @@ namespace Zad2
 
         private void ObjectColorSolidRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            StopTimer();
-            if (objectColorTextureRadioButton.Checked == true)
-            {
-                OpenFileDialog dialog = new OpenFileDialog();
-                dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
-                dialog.InitialDirectory = @"C:\";
-                dialog.Title = "Please select an image file.";
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    Image sourceImage = new Bitmap(dialog.FileName);
-
-
-                    sourceImageBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
-                    sourceImageBitsHandle = GCHandle.Alloc(sourceImageBits, GCHandleType.Pinned);
-                    sourceImageBitmap = new Bitmap(backgroundBitmapWidth,
-                                                  backgroundBitmapHeight,
-                                                  backgroundBitmapWidth * 4,
-                                                  System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
-                                                  sourceImageBitsHandle.AddrOfPinnedObject());
-
-                    Graphics graphics = Graphics.FromImage(sourceImageBitmap);
-                    graphics.DrawImage(sourceImage, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
-                    useSolidColor = false;
-                }
-                else
-                {
-                    objectColorTextureRadioButton.Checked = false;
-                    objectColorSolidRadioButton.Checked = true;
-                    useSolidColor = true;
-                }
-            }
-            else useSolidColor = true;
-            ContinueTimer();
+            useSolidColor = objectColorSolidRadioButton.Checked;
             RedrawBackgroundBitmap(useParallelism: false);
         }
+
+        private void LoadBackgroundFromPath(string path)
+        {
+            Image sourceImage = new Bitmap(path);
+
+
+            sourceImageBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
+            sourceImageBitsHandle = GCHandle.Alloc(sourceImageBits, GCHandleType.Pinned);
+            sourceImageBitmap = new Bitmap(backgroundBitmapWidth,
+                                          backgroundBitmapHeight,
+                                          backgroundBitmapWidth * 4,
+                                          System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
+                                          sourceImageBitsHandle.AddrOfPinnedObject());
+
+            Graphics graphics = Graphics.FromImage(sourceImageBitmap);
+            graphics.DrawImage(sourceImage, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+        }
+
 
         private void LoadNormalMappingButton_Click(object sender, EventArgs e)
         {
@@ -445,22 +442,27 @@ namespace Zad2
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                Image normalMap = new Bitmap(dialog.FileName);
-
-
-                normalMapBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
-                normalMapBitsHandle = GCHandle.Alloc(normalMapBits, GCHandleType.Pinned);
-                normalMapBitmap = new Bitmap(backgroundBitmapWidth,
-                                              backgroundBitmapHeight,
-                                              backgroundBitmapWidth * 4,
-                                              System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
-                                              normalMapBitsHandle.AddrOfPinnedObject());
-
-                Graphics graphics = Graphics.FromImage(normalMapBitmap);
-                graphics.DrawImage(normalMap, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
+                LoadNormalMapFromPath(dialog.FileName);
                 return true;
             }
             else return false;
+        }
+
+        private void LoadNormalMapFromPath(string path)
+        {
+            Image normalMap = new Bitmap(path);
+
+
+            normalMapBits = new Int32[backgroundBitmapHeight * backgroundBitmapWidth];
+            normalMapBitsHandle = GCHandle.Alloc(normalMapBits, GCHandleType.Pinned);
+            normalMapBitmap = new Bitmap(backgroundBitmapWidth,
+                                          backgroundBitmapHeight,
+                                          backgroundBitmapWidth * 4,
+                                          System.Drawing.Imaging.PixelFormat.Format32bppPArgb,
+                                          normalMapBitsHandle.AddrOfPinnedObject());
+
+            Graphics graphics = Graphics.FromImage(normalMapBitmap);
+            graphics.DrawImage(normalMap, 0, 0, backgroundBitmapWidth, backgroundBitmapHeight);
         }
 
         private void StopTimer()
@@ -511,6 +513,21 @@ namespace Zad2
             }
             else return;
             RedrawBackgroundBitmap(useParallelism: false);
+        }
+
+        private void loadTextureButton_Click(object sender, EventArgs e)
+        {
+            StopTimer();
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            dialog.InitialDirectory = Path.GetFullPath("..\\..\\..\\background_images");
+            dialog.Title = "Please select an image file.";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                LoadBackgroundFromPath(dialog.FileName);
+            }
+            ContinueTimer();
         }
     }
 }

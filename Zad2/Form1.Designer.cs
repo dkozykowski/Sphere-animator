@@ -55,6 +55,7 @@ namespace Zad2
             this.mValueSlider = new System.Windows.Forms.TrackBar();
             this.label9 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.loadTextureButton = new System.Windows.Forms.Button();
             this.objectColorPictureBox = new System.Windows.Forms.PictureBox();
             this.objectColorTextureRadioButton = new System.Windows.Forms.RadioButton();
             this.objectColorSolidRadioButton = new System.Windows.Forms.RadioButton();
@@ -136,6 +137,8 @@ namespace Zad2
             // useNormalMapCheckbox
             // 
             this.useNormalMapCheckbox.AutoSize = true;
+            this.useNormalMapCheckbox.Checked = true;
+            this.useNormalMapCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.useNormalMapCheckbox.Location = new System.Drawing.Point(27, 615);
             this.useNormalMapCheckbox.Name = "useNormalMapCheckbox";
             this.useNormalMapCheckbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -191,7 +194,7 @@ namespace Zad2
             this.kValueSlider.Size = new System.Drawing.Size(300, 56);
             this.kValueSlider.TabIndex = 27;
             this.kValueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.kValueSlider.Value = 100;
+            this.kValueSlider.Value = 80;
             this.kValueSlider.ValueChanged += new System.EventHandler(this.KValueSlider_ValueChanged);
             // 
             // label13
@@ -320,22 +323,22 @@ namespace Zad2
             // animatedLightVersorButton
             // 
             this.animatedLightVersorButton.AutoSize = true;
+            this.animatedLightVersorButton.Checked = true;
             this.animatedLightVersorButton.Location = new System.Drawing.Point(6, 33);
             this.animatedLightVersorButton.Name = "animatedLightVersorButton";
             this.animatedLightVersorButton.Size = new System.Drawing.Size(93, 24);
             this.animatedLightVersorButton.TabIndex = 1;
+            this.animatedLightVersorButton.TabStop = true;
             this.animatedLightVersorButton.Text = "animated";
             this.animatedLightVersorButton.UseVisualStyleBackColor = true;
             // 
             // constLightVersorButton
             // 
             this.constLightVersorButton.AutoSize = true;
-            this.constLightVersorButton.Checked = true;
             this.constLightVersorButton.Location = new System.Drawing.Point(6, 3);
             this.constLightVersorButton.Name = "constLightVersorButton";
             this.constLightVersorButton.Size = new System.Drawing.Size(156, 24);
             this.constLightVersorButton.TabIndex = 0;
-            this.constLightVersorButton.TabStop = true;
             this.constLightVersorButton.Text = "constant   ([0, 0, 1])";
             this.constLightVersorButton.UseVisualStyleBackColor = true;
             this.constLightVersorButton.CheckedChanged += new System.EventHandler(this.ConstLightVersorButton_CheckedChanged);
@@ -390,6 +393,7 @@ namespace Zad2
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.loadTextureButton);
             this.panel1.Controls.Add(this.objectColorPictureBox);
             this.panel1.Controls.Add(this.objectColorTextureRadioButton);
             this.panel1.Controls.Add(this.objectColorSolidRadioButton);
@@ -398,9 +402,19 @@ namespace Zad2
             this.panel1.Size = new System.Drawing.Size(257, 71);
             this.panel1.TabIndex = 11;
             // 
+            // loadTextureButton
+            // 
+            this.loadTextureButton.Location = new System.Drawing.Point(97, 40);
+            this.loadTextureButton.Name = "loadTextureButton";
+            this.loadTextureButton.Size = new System.Drawing.Size(142, 28);
+            this.loadTextureButton.TabIndex = 32;
+            this.loadTextureButton.Text = "Load texture";
+            this.loadTextureButton.UseVisualStyleBackColor = true;
+            this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
+            // 
             // objectColorPictureBox
             // 
-            this.objectColorPictureBox.Location = new System.Drawing.Point(116, 14);
+            this.objectColorPictureBox.Location = new System.Drawing.Point(116, 4);
             this.objectColorPictureBox.Name = "objectColorPictureBox";
             this.objectColorPictureBox.Size = new System.Drawing.Size(46, 32);
             this.objectColorPictureBox.TabIndex = 12;
@@ -410,22 +424,22 @@ namespace Zad2
             // objectColorTextureRadioButton
             // 
             this.objectColorTextureRadioButton.AutoSize = true;
+            this.objectColorTextureRadioButton.Checked = true;
             this.objectColorTextureRadioButton.Location = new System.Drawing.Point(6, 46);
             this.objectColorTextureRadioButton.Name = "objectColorTextureRadioButton";
             this.objectColorTextureRadioButton.Size = new System.Drawing.Size(76, 24);
             this.objectColorTextureRadioButton.TabIndex = 1;
+            this.objectColorTextureRadioButton.TabStop = true;
             this.objectColorTextureRadioButton.Text = "texture";
             this.objectColorTextureRadioButton.UseVisualStyleBackColor = true;
             // 
             // objectColorSolidRadioButton
             // 
             this.objectColorSolidRadioButton.AutoSize = true;
-            this.objectColorSolidRadioButton.Checked = true;
             this.objectColorSolidRadioButton.Location = new System.Drawing.Point(6, 16);
             this.objectColorSolidRadioButton.Name = "objectColorSolidRadioButton";
             this.objectColorSolidRadioButton.Size = new System.Drawing.Size(100, 24);
             this.objectColorSolidRadioButton.TabIndex = 0;
-            this.objectColorSolidRadioButton.TabStop = true;
             this.objectColorSolidRadioButton.Text = "solid color";
             this.objectColorSolidRadioButton.UseVisualStyleBackColor = true;
             this.objectColorSolidRadioButton.CheckedChanged += new System.EventHandler(this.ObjectColorSolidRadioButton_CheckedChanged);
@@ -598,6 +612,7 @@ namespace Zad2
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button loadNormalMappingButton;
         private System.Windows.Forms.CheckBox useNormalMapCheckbox;
+        private System.Windows.Forms.Button loadTextureButton;
     }
 }
 
