@@ -216,7 +216,6 @@ namespace Zad2
         {
 
             Graphics graphics = Graphics.FromImage(backgroundBitmap);
-            graphics.Clear(Color.White);
 
             if (useParallelism)
             {
