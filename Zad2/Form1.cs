@@ -53,7 +53,7 @@ namespace Zad2
 
         bool useSolidColor;
         bool useNormalMap;
-        private readonly string DEFAULT_NORMAL_MAP_PATH = "..\\..\\..\\normal_maps\\brick_wall_harsh.png";
+        private readonly string DEFAULT_NORMAL_MAP_PATH = "..\\..\\..\\normal_maps\\brick_wall.png";
         private readonly string DEFAULT_BACKGROUND_PATH = "..\\..\\..\\background_images\\brick_wall.png";
 
         public Form1()
@@ -163,6 +163,23 @@ namespace Zad2
             return RGBToInt(R / 3, G / 3, B / 3);
         }
 
+        private Point FoldTextureVersorToSphere(Point textureVersor, Point sphereNormalVersor)
+        {
+            float _x, _y, _z;
+            _x = textureVersor.x * (-1) * sphereNormalVersor.x * sphereNormalVersor.z +
+                 textureVersor.y * sphereNormalVersor.y +
+                 textureVersor.z * sphereNormalVersor.x;
+
+            _y = textureVersor.x * (-1) * sphereNormalVersor.y * sphereNormalVersor.z +
+                 textureVersor.y * (-1) * sphereNormalVersor.x +
+                 textureVersor.z * sphereNormalVersor.y;
+
+            _z = textureVersor.x * (Pow(sphereNormalVersor.x, 2) + Pow(sphereNormalVersor.y, 2)) +
+                 textureVersor.z * sphereNormalVersor.z;
+
+            return new Point(_x, _y, _z);
+        }
+
         private Point GetNormalVersor(int x, int y)
         {
             float _x, _y, _z, _radius;
@@ -177,6 +194,7 @@ namespace Zad2
             {
                 Point textureVersor = new Point(IntToRGB(normalMapBits[x + y * backgroundBitmapWidth]));
                 textureVersor.Normalise();
+                textureVersor = FoldTextureVersorToSphere(textureVersor, normalVersor);
                 normalVersor = K * normalVersor - (K - 1) * textureVersor;
             }
             return normalVersor;
@@ -371,7 +389,7 @@ namespace Zad2
             float MAX = 240;
             if (tickCounter == MAX) tickCounter = 0;
             float _x, _y, _z;
-            _z = 0.2F;
+            _z = 0.1F;
             _x = (float)Math.Cos(tickCounter / MAX * Math.PI * 2);
             _y = (float)Math.Sin(tickCounter / MAX * Math.PI * 2);
 
