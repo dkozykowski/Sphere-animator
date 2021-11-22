@@ -1,5 +1,5 @@
 ﻿
-namespace Zad2
+namespace SphereAnimator
 {
     partial class Form1
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zad2
+namespace SphereAnimator
 {
     public class Triangle
     {
