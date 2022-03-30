@@ -19,12 +19,11 @@ User might change parameters such as:
 
 ## Application screenshots
 
-<p align="center">
-  <img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss3.png?raw=true" width="600" height="410" />
 
-  <img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss2.png?raw=true" width="600" height="410" />
+<img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss3.png?raw=true" width="600" height="410" />
 
-  <img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss1.png?raw=true" width="600" height="410" />
+<img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss2.png?raw=true" width="600" height="410" />
 
-  <img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss4.png?raw=true" width="600" height="410" />
- </p>
+<img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss1.png?raw=true" width="600" height="410" />
+
+<img src="https://github.com/dkozykowski/Sphere-animator/blob/master/Screenshots/ss4.png?raw=true" width="600" height="410" />
